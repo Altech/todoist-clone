@@ -7,7 +7,7 @@
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
-    "firebase": "9.0.0-beta.2",
+    "firebase": "8.8.0",
     "firebaseui": "^4.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"

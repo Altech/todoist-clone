@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { initializeApp } from 'firebase/app';
+// import { initializeApp } from 'firebase/app';
+import { EmailAuthProvider, getAuth } from 'firebase/auth';
 import {
   addDoc,
   collection,
   CollectionReference,
   getFirestore,
 } from 'firebase/firestore';
+import { auth } from 'firebaseui';
 
 const firebaseApp = initializeApp({
   apiKey: 'AIzaSyCnKWVx4RhE0eC9aIIKZIk0AAe63tLngVI',
@@ -20,6 +22,8 @@ const firebaseApp = initializeApp({
   measurementId: 'G-JPPCQ5QWM5',
 });
 
+// Firestore
+//----------------------------------------------
 const db = getFirestore();
 
 // Initialize Firebase
@@ -38,6 +42,12 @@ interface User {
   born: number;
   count: number;
 }
+
+// Firebase auth
+const ui = new auth.AuthUI(getAuth());
+ui.start('#firebaseui-auth-container', {
+  signInOptions: [EmailAuthProvider.PROVIDER_ID],
+});
 
 function App({}: AppProps) {
   // Create the count state.
