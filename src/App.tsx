@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import {
   addDoc,
   collection,
@@ -19,6 +20,11 @@ const firebaseApp = initializeApp({
   appId: '1:1020253811345:web:537661c6730f7d331dc530',
   measurementId: 'G-JPPCQ5QWM5',
 });
+
+// Authentication
+//----------------------------------------------
+const firebaseAuth = getAuth(firebaseApp);
+console.log(`auth.currentUser: ${firebaseAuth.currentUser}`);
 
 // Firestore
 //----------------------------------------------
