@@ -3,7 +3,11 @@ import logo from './logo.svg';
 import './App.css';
 
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import {
+  browserLocalPersistence,
+  getAuth,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import {
   addDoc,
   collection,
@@ -11,6 +15,8 @@ import {
   getFirestore,
 } from 'firebase/firestore';
 
+// Initialize
+//----------------------------------------------
 const firebaseApp = initializeApp({
   apiKey: 'AIzaSyCnKWVx4RhE0eC9aIIKZIk0AAe63tLngVI',
   authDomain: 'altech-todoist.firebaseapp.com',
@@ -24,14 +30,29 @@ const firebaseApp = initializeApp({
 // Authentication
 //----------------------------------------------
 const firebaseAuth = getAuth(firebaseApp);
-console.log(`auth.currentUser: ${firebaseAuth.currentUser}`);
+
+function signInMe() {
+  firebaseAuth
+    .setPersistence(browserLocalPersistence)
+    .then(() => {
+      const [email, password] = ['takeno.sh@gmail.com', 'testtest'];
+      signInWithEmailAndPassword(firebaseAuth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
+    })
+    .catch((e) => console.log(e));
+}
 
 // Firestore
 //----------------------------------------------
 const db = getFirestore();
-
-// Initialize Firebase
-// firebase.analytics();
 
 interface AppProps {}
 
@@ -67,6 +88,9 @@ function App({}: AppProps) {
   // Return the App component.
   return (
     <div className="App">
+      <div>
+        currentUser.uid: {JSON.stringify(firebaseAuth.currentUser?.uid)}
+      </div>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
