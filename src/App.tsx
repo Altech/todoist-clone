@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-// import { initializeApp } from 'firebase/app';
-import { EmailAuthProvider, getAuth } from 'firebase/auth';
-import {
-  addDoc,
-  collection,
-  CollectionReference,
-  getFirestore,
-} from 'firebase/firestore';
+import firebase from 'firebase';
 import { auth } from 'firebaseui';
 
-const firebaseApp = initializeApp({
+// import {
+//   addDoc,
+//   collection,
+//   CollectionReference,
+//   getFirestore,
+// } from 'firebase/firestore';
+
+const firebaseApp = firebase.initializeApp({
   apiKey: 'AIzaSyCnKWVx4RhE0eC9aIIKZIk0AAe63tLngVI',
   authDomain: 'altech-todoist.firebaseapp.com',
   projectId: 'altech-todoist',
@@ -24,7 +24,7 @@ const firebaseApp = initializeApp({
 
 // Firestore
 //----------------------------------------------
-const db = getFirestore();
+// const db = getFirestore();
 
 // Initialize Firebase
 // firebase.analytics();
@@ -44,9 +44,9 @@ interface User {
 }
 
 // Firebase auth
-const ui = new auth.AuthUI(getAuth());
+const ui = new auth.AuthUI(firebase.auth());
 ui.start('#firebaseui-auth-container', {
-  signInOptions: [EmailAuthProvider.PROVIDER_ID],
+  signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
 });
 
 function App({}: AppProps) {
@@ -57,20 +57,20 @@ function App({}: AppProps) {
     const timer = setTimeout(() => setCount(count + 1), 1000);
     return () => clearTimeout(timer);
   }, [count, setCount]);
-  useEffect(() => {
-    addDoc<User>(collection(db, 'users') as CollectionReference<User>, {
-      first: 'Ada',
-      last: 'Hoge',
-      born: 1815,
-      count: count,
-    })
-      .then((docRef) => {
-        console.log('Document written with ID: ', docRef.id);
-      })
-      .catch((e) => {
-        console.error('Error adding document: ', e);
-      });
-  }, []);
+  // useEffect(() => {
+  //   addDoc<User>(collection(db, 'users') as CollectionReference<User>, {
+  //     first: 'NewUi',
+  //     last: 'Hoge',
+  //     born: 1815,
+  //     count: count,
+  //   })
+  //     .then((docRef) => {
+  //       console.log('Document written with ID: ', docRef.id);
+  //     })
+  //     .catch((e) => {
+  //       console.error('Error adding document: ', e);
+  //     });
+  // }, []);
   // Return the App component.
   return (
     <div className="App">
