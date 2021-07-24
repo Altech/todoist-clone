@@ -2,17 +2,15 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import firebase from 'firebase';
-import { auth } from 'firebaseui';
+import { initializeApp } from 'firebase/app';
+import {
+  addDoc,
+  collection,
+  CollectionReference,
+  getFirestore,
+} from 'firebase/firestore';
 
-// import {
-//   addDoc,
-//   collection,
-//   CollectionReference,
-//   getFirestore,
-// } from 'firebase/firestore';
-
-const firebaseApp = firebase.initializeApp({
+const firebaseApp = initializeApp({
   apiKey: 'AIzaSyCnKWVx4RhE0eC9aIIKZIk0AAe63tLngVI',
   authDomain: 'altech-todoist.firebaseapp.com',
   projectId: 'altech-todoist',
@@ -24,15 +22,10 @@ const firebaseApp = firebase.initializeApp({
 
 // Firestore
 //----------------------------------------------
-// const db = getFirestore();
+const db = getFirestore();
 
 // Initialize Firebase
 // firebase.analytics();
-
-// interface Window {
-//   myset: any;
-// }
-// declare var window: Window;
 
 interface AppProps {}
 
@@ -43,12 +36,6 @@ interface User {
   count: number;
 }
 
-// Firebase auth
-const ui = new auth.AuthUI(firebase.auth());
-ui.start('#firebaseui-auth-container', {
-  signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
-});
-
 function App({}: AppProps) {
   // Create the count state.
   const [count, setCount] = useState(0);
@@ -57,20 +44,20 @@ function App({}: AppProps) {
     const timer = setTimeout(() => setCount(count + 1), 1000);
     return () => clearTimeout(timer);
   }, [count, setCount]);
-  // useEffect(() => {
-  //   addDoc<User>(collection(db, 'users') as CollectionReference<User>, {
-  //     first: 'NewUi',
-  //     last: 'Hoge',
-  //     born: 1815,
-  //     count: count,
-  //   })
-  //     .then((docRef) => {
-  //       console.log('Document written with ID: ', docRef.id);
-  //     })
-  //     .catch((e) => {
-  //       console.error('Error adding document: ', e);
-  //     });
-  // }, []);
+  useEffect(() => {
+    addDoc<User>(collection(db, 'users') as CollectionReference<User>, {
+      first: 'NewUi',
+      last: 'Hoge',
+      born: 1815,
+      count: count,
+    })
+      .then((docRef) => {
+        console.log('Document written with ID: ', docRef.id);
+      })
+      .catch((e) => {
+        console.error('Error adding document: ', e);
+      });
+  }, []);
   // Return the App component.
   return (
     <div className="App">
