@@ -11,6 +11,7 @@ import {
   getFirestore,
   setDoc,
 } from 'firebase/firestore';
+import { onAuthStateChanged } from '@firebase/auth';
 
 // Firestore
 //----------------------------------------------
@@ -25,7 +26,18 @@ interface User {
 }
 
 function App({}: AppProps) {
-  const userId = firebaseAuth.currentUser?.uid;
+  const [userId, setUserId] = useState<string | undefined>(
+    firebaseAuth.currentUser?.uid,
+  );
+
+  onAuthStateChanged(firebaseAuth, (user) => {
+    console.log('state Change');
+    if (user) {
+      setUserId(user.uid);
+    } else {
+      setUserId(undefined);
+    }
+  });
 
   // useEffect(() => {
   //   if (!userId) return;

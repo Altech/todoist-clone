@@ -5,7 +5,8 @@ import { firebaseAuth } from './firebase';
 
 export const LoginHeader = (props: { userId?: string }) => {
   const userId = props.userId;
-  const [signedIn, setSignedIn] = useState<boolean>(!!userId);
+  const signedIn = !!userId;
+
   // states for sign in
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -19,10 +20,7 @@ export const LoginHeader = (props: { userId?: string }) => {
     signInWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredential) => {
         console.log('sign in success.');
-        setSignedIn(true);
-        // Signed in
-        const user = userCredential.user;
-        // ...
+        // The change will be triggered via `onAuthStateChanged`
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -39,9 +37,8 @@ export const LoginHeader = (props: { userId?: string }) => {
         <div>userId: {JSON.stringify(userId)}</div>
         <button
           onClick={() => {
-            firebaseAuth.signOut().then(() => {
-              setSignedIn(false);
-            });
+            firebaseAuth.signOut();
+            // The change will be triggered via `onAuthStateChanged`
           }}
         >
           Sign Out
