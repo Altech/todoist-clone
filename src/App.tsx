@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { initializeApp } from 'firebase/app';
+import { firebaseApp } from './firebaseApp';
+
 import {
   browserLocalPersistence,
   getAuth,
@@ -14,20 +15,6 @@ import {
   getFirestore,
   setDoc,
 } from 'firebase/firestore';
-
-// Initialize
-//----------------------------------------------
-try {
-  var firebaseApp = initializeApp({
-    apiKey: 'AIzaSyCnKWVx4RhE0eC9aIIKZIk0AAe63tLngVI',
-    authDomain: 'altech-todoist.firebaseapp.com',
-    projectId: 'altech-todoist',
-    storageBucket: 'altech-todoist.appspot.com',
-    messagingSenderId: '1020253811345',
-    appId: '1:1020253811345:web:537661c6730f7d331dc530',
-    measurementId: 'G-JPPCQ5QWM5',
-  });
-} catch {}
 
 // Authentication
 //----------------------------------------------
