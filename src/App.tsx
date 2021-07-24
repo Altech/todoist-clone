@@ -9,23 +9,25 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import {
-  addDoc,
-  collection,
-  CollectionReference,
+  doc,
+  DocumentReference,
   getFirestore,
+  setDoc,
 } from 'firebase/firestore';
 
 // Initialize
 //----------------------------------------------
-const firebaseApp = initializeApp({
-  apiKey: 'AIzaSyCnKWVx4RhE0eC9aIIKZIk0AAe63tLngVI',
-  authDomain: 'altech-todoist.firebaseapp.com',
-  projectId: 'altech-todoist',
-  storageBucket: 'altech-todoist.appspot.com',
-  messagingSenderId: '1020253811345',
-  appId: '1:1020253811345:web:537661c6730f7d331dc530',
-  measurementId: 'G-JPPCQ5QWM5',
-});
+try {
+  var firebaseApp = initializeApp({
+    apiKey: 'AIzaSyCnKWVx4RhE0eC9aIIKZIk0AAe63tLngVI',
+    authDomain: 'altech-todoist.firebaseapp.com',
+    projectId: 'altech-todoist',
+    storageBucket: 'altech-todoist.appspot.com',
+    messagingSenderId: '1020253811345',
+    appId: '1:1020253811345:web:537661c6730f7d331dc530',
+    measurementId: 'G-JPPCQ5QWM5',
+  });
+} catch {}
 
 // Authentication
 //----------------------------------------------
@@ -64,6 +66,8 @@ interface User {
 }
 
 function App({}: AppProps) {
+  const userId = firebaseAuth.currentUser?.uid;
+
   // Create the count state.
   const [count, setCount] = useState(0);
   // Create the counter (+1 every second).
@@ -71,15 +75,17 @@ function App({}: AppProps) {
     const timer = setTimeout(() => setCount(count + 1), 1000);
     return () => clearTimeout(timer);
   }, [count, setCount]);
+  // Add sample document to firebstore.
   useEffect(() => {
-    addDoc<User>(collection(db, 'users') as CollectionReference<User>, {
+    if (!userId) return;
+    setDoc<User>(doc(db, 'users', userId) as DocumentReference<User>, {
       first: 'NewUi',
       last: 'Hoge',
       born: 1815,
       count: count,
     })
       .then((docRef) => {
-        console.log('Document written with ID: ', docRef.id);
+        console.log('Document written.');
       })
       .catch((e) => {
         console.error('Error adding document: ', e);
@@ -88,9 +94,7 @@ function App({}: AppProps) {
   // Return the App component.
   return (
     <div className="App">
-      <div>
-        currentUser.uid: {JSON.stringify(firebaseAuth.currentUser?.uid)}
-      </div>
+      <div>userId: {JSON.stringify(userId)}</div>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
