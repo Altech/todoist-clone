@@ -1,12 +1,12 @@
-.App {
+.CreateReactApp {
   text-align: center;
 }
-.App code {
+.CreateReactApp code {
   background: #FFF3;
   padding: 4px 8px;
   border-radius: 4px;
 }
-.App p {
+.CreateReactApp p {
   margin: 0.4rem;
 }
 

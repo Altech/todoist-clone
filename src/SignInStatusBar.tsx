@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
+import './SignInStatusBar.css';
 import { firebaseAuth } from './firebase';
 
-export const LoginHeader = (props: { userId?: string }) => {
+export const SignInStatusBar = (props: { userId?: string }) => {
   const userId = props.userId;
   const signedIn = !!userId;
 
@@ -15,7 +16,7 @@ export const LoginHeader = (props: { userId?: string }) => {
   // ...
 
   // TODO: useCallback
-  const loginHandler = (e) => {
+  const loginHandler = (e: any) => {
     e.preventDefault();
     signInWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredential) => {
@@ -33,7 +34,7 @@ export const LoginHeader = (props: { userId?: string }) => {
 
   if (signedIn) {
     return (
-      <div>
+      <div className="SignInStatusBar SignIn">
         <div>userId: {JSON.stringify(userId)}</div>
         <button
           onClick={() => {
@@ -47,7 +48,7 @@ export const LoginHeader = (props: { userId?: string }) => {
     );
   } else {
     return (
-      <div>
+      <div className="SignInStatusBar SignUp">
         <h3>Sign In</h3>
         <form className="SignInForm">
           <div>

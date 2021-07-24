@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { firebaseAuth } from './firebase';
-import { LoginHeader } from './LoginHeader';
+import { SignInStatusBar } from './SignInStatusBar';
 import logo from './logo.svg';
 import './App.css';
 
@@ -31,12 +31,7 @@ function App({}: AppProps) {
   );
 
   onAuthStateChanged(firebaseAuth, (user) => {
-    console.log('state Change');
-    if (user) {
-      setUserId(user.uid);
-    } else {
-      setUserId(undefined);
-    }
+    setUserId(user?.uid);
   });
 
   // useEffect(() => {
@@ -56,24 +51,26 @@ function App({}: AppProps) {
 
   return (
     <div className="App">
-      <LoginHeader userId={userId} />
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <p>Page has been open.</p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </p>
-      </header>
+      <SignInStatusBar userId={userId} />
+      <div className="CreateReactApp">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <p>
+            Edit <code>src/App.tsx</code> and save to reload.
+          </p>
+          <p>Page has been open.</p>
+          <p>
+            <a
+              className="App-link"
+              href="https://reactjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Learn React
+            </a>
+          </p>
+        </header>
+      </div>
     </div>
   );
 }

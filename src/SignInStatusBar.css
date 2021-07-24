@@ -1,0 +1,13 @@
+.SignInStatusBar {
+    background: rgb(89, 89, 89);
+    color: white;
+    padding: 14px;
+}
+
+.SignInStatusBar.SignIn {
+    display: flex;
+}
+
+.SignInStatusBar.SignIn button {
+    margin-left: auto;
+}
