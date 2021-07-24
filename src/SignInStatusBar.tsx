@@ -13,7 +13,7 @@ export const SignInStatusBar = (props: { userId?: string }) => {
   const [password, setPassword] = useState<string>('');
 
   // states for sign up
-  // ...
+  const [expand, setExpand] = useState<boolean>(false);
 
   // TODO: useCallback
   const loginHandler = (e: any) => {
@@ -35,7 +35,7 @@ export const SignInStatusBar = (props: { userId?: string }) => {
   if (signedIn) {
     return (
       <div className="SignInStatusBar SignIn">
-        <div>userId: {JSON.stringify(userId)}</div>
+        <div>▷ user ID: {userId}</div>
         <button
           onClick={() => {
             firebaseAuth.signOut();
@@ -49,25 +49,40 @@ export const SignInStatusBar = (props: { userId?: string }) => {
   } else {
     return (
       <div className="SignInStatusBar SignUp">
-        <h3>Sign In</h3>
-        <form className="SignInForm">
+        {
           <div>
-            email:
-            <input type="email" onChange={(e) => setEmail(e.target.value)} />
+            <span onClick={() => setExpand((prev) => !prev)}>
+              {expand ? '▼ ' : '▶︎ '}
+            </span>
+            user ID: ---
           </div>
+        }
+        {expand && (
           <div>
-            password:
-            <input
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <h3>Sign In</h3>
+            <form className="SignInForm">
+              <div>
+                email:
+                <input
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div>
+                password:
+                <input
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <button type="submit" onClick={loginHandler}>
+                Sign In
+              </button>
+            </form>
+            <h3>Sign Up</h3>
+            (TODO: ui)
           </div>
-          <button type="submit" onClick={loginHandler}>
-            Sign In
-          </button>
-        </form>
-        <h3>Sign Up</h3>
-        (TODO: ui)
+        )}
       </div>
     );
   }
