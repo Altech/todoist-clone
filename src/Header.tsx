@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import PlusIcon from './svg/plus-rectangle';
-import MenuIcon from './svg/menu';
+import UnorderedListIcon from './svg/unordered-list';
 
 type Props = {
   onClickMenuHandler: () => void;
@@ -17,10 +17,10 @@ const Header: React.FC<Props> = (props) => {
   return (
     <DivHeader>
       <DivMenu onClick={props.onClickMenuHandler}>
-        <MenuIcon
+        <UnorderedListIcon
           style={{
-            width: '20px',
-            height: '20px',
+            width: '24px',
+            height: '24px',
             fill: 'currentColor',
             padding: '8px',
           }}
