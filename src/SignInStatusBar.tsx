@@ -4,7 +4,7 @@ import { signInWithEmailAndPassword, User } from 'firebase/auth';
 import './SignInStatusBar.css';
 import { firebaseAuth } from './firebase';
 
-export const SignInStatusBar = (props: { user: User | null }) => {
+const SignInStatusBar = (props: { user: User | null }) => {
   const userId = props.user?.uid;
   const signedIn = !!props.user;
 
@@ -87,3 +87,5 @@ export const SignInStatusBar = (props: { user: User | null }) => {
     );
   }
 };
+
+export default SignInStatusBar;

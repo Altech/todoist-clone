@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import styled from 'styled-components';
 import {
   doc,
   DocumentReference,
@@ -7,14 +7,13 @@ import {
   setDoc,
 } from 'firebase/firestore';
 
-import { SignInStatusBar } from './SignInStatusBar';
+import useAuthState from './util/useAuthState';
+import SignInStatusBar from './SignInStatusBar';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Mainbar from './Mainbar';
-import useAuthState from './util/useAuthState';
-import logo from './logo.svg';
+
 import './App.css';
-import styled from 'styled-components';
 
 // Firestore
 //----------------------------------------------
