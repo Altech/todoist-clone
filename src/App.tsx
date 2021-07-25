@@ -10,9 +10,11 @@ import {
 import { SignInStatusBar } from './SignInStatusBar';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import Mainbar from './Mainbar';
 import useAuthState from './util/useAuthState';
 import logo from './logo.svg';
 import './App.css';
+import styled from 'styled-components';
 
 // Firestore
 //----------------------------------------------
@@ -50,11 +52,17 @@ function App({}: AppProps) {
     <div className="App">
       <SignInStatusBar user={user} />
       <Header />
-      <div>
+      <DivBars>
         <Sidebar />
-      </div>
+        <Mainbar />
+      </DivBars>
     </div>
   );
 }
+
+const DivBars = styled.div`
+  display: flex;
+  height: 100%;
+`;
 
 export default App;

@@ -4,13 +4,12 @@ import styled from 'styled-components';
 type Props = {};
 
 const Sidebar: React.FC<Props> = (props) => {
-  return <DivSidebar>sidebar</DivSidebar>;
+  return <DivMainBar>mainbar</DivMainBar>;
 };
 
-const DivSidebar = styled.div`
-  /* background: #fbfafa; */
-  background: red;
-  width: 304px;
+const DivMainBar = styled.div`
+  background: yellow;
+  width: 100%;
 `;
 
 export default Sidebar;
