@@ -30,9 +30,12 @@ function App({}: AppProps) {
     firebaseAuth.currentUser?.uid,
   );
 
-  onAuthStateChanged(firebaseAuth, (user) => {
-    setUserId(user?.uid);
-  });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
+      setUserId(user?.uid);
+    });
+    return unsubscribe;
+  }, [firebaseAuth]);
 
   // useEffect(() => {
   //   if (!userId) return;
