@@ -8,7 +8,7 @@ const Sidebar: React.FC<Props> = (props) => {
 };
 
 const DivMainBar = styled.div`
-  background: yellow;
+  background: white;
   width: 100%;
 `;
 
