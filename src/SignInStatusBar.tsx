@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, User } from 'firebase/auth';
 
 import './SignInStatusBar.css';
 import { firebaseAuth } from './firebase';
 
-export const SignInStatusBar = (props: { userId?: string }) => {
-  const userId = props.userId;
-  const signedIn = !!userId;
+export const SignInStatusBar = (props: { user: User | null }) => {
+  const userId = props.user?.uid;
+  const signedIn = !!props.user;
 
   // states for sign in
   const [email, setEmail] = useState<string>('');

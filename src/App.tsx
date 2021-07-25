@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
-import { firebaseAuth } from './firebase';
-import { SignInStatusBar } from './SignInStatusBar';
-import logo from './logo.svg';
-import './App.css';
-
 import {
   doc,
   DocumentReference,
   getFirestore,
   setDoc,
 } from 'firebase/firestore';
-import { onAuthStateChanged } from '@firebase/auth';
+
+import { SignInStatusBar } from './SignInStatusBar';
+import useAuthState from './util/useAuthState';
+import logo from './logo.svg';
+import './App.css';
 
 // Firestore
 //----------------------------------------------
@@ -26,16 +25,7 @@ interface User {
 }
 
 function App({}: AppProps) {
-  const [userId, setUserId] = useState<string | undefined>(
-    firebaseAuth.currentUser?.uid,
-  );
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
-      setUserId(user?.uid);
-    });
-    return unsubscribe;
-  }, [firebaseAuth]);
+  const [user, loading] = useAuthState();
 
   // useEffect(() => {
   //   if (!userId) return;
@@ -52,9 +42,11 @@ function App({}: AppProps) {
   //     });
   // }, []);
 
+  if (loading) return <div style={{ color: '#ccc' }}>loading...</div>;
+
   return (
     <div className="App">
-      <SignInStatusBar userId={userId} />
+      <SignInStatusBar user={user} />
       <div className="CreateReactApp">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
