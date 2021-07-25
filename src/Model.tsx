@@ -32,11 +32,14 @@
 type ID = string;
 
 // UI上、1行として表示されるものに一致する
-type Task = {
-  parentTaskId?: ID; // 階層的に構築できる(機能実装はしないかも) ... こういう場合どうするんだろ？
-  projectId: ID; // Firestore の設計によってはパスに入るかもしれない
+export type Task = {
+  done: boolean;
+  name: string;
+  scheduleDate: Date | null;
+  // parentTaskId?: ID; // 階層的に構築できる(機能実装はしないかも) ... こういう場合どうするんだろ？
+  // projectId: ID; // Firestore の設計によってはパスに入るかもしれない
 };
 
-type Project = {
+export type Project = {
   name: string;
 };
