@@ -30,6 +30,7 @@ interface User {
 
 function App({}: AppProps) {
   const [user, loading] = useAuthState();
+  const [statusBarShown, setStatusBarShown] = useState<boolean>(false);
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(true);
 
   // useEffect(() => {
@@ -51,8 +52,11 @@ function App({}: AppProps) {
 
   return (
     <div className="App">
-      <SignInStatusBar user={user} />
-      <Header onClickMenuHandler={() => setSidebarExpanded((prev) => !prev)} />
+      {(statusBarShown || !user) && <SignInStatusBar user={user} />}
+      <Header
+        onClickMenuHandler={() => setSidebarExpanded((prev) => !prev)}
+        onClickAvatarHandler={() => setStatusBarShown((prev) => !prev)}
+      />
       <DivBars>
         {sidebarExpanded && <Sidebar />}
         <Mainbar />

@@ -6,6 +6,7 @@ import MenuIcon from './svg/menu';
 
 type Props = {
   onClickMenuHandler: () => void;
+  onClickAvatarHandler: () => void;
 };
 
 // TODO: dummy
@@ -34,7 +35,11 @@ const Header: React.FC<Props> = (props) => {
           marginLeft: 'auto',
         }}
       />
-      <img src={avatarUrl} style={{ width: '28px', borderRadius: '50%' }} />
+      <img
+        src={avatarUrl}
+        style={{ width: '28px', borderRadius: '50%' }}
+        onClick={props.onClickAvatarHandler}
+      />
     </DivHeader>
   );
 };
