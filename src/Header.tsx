@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import PlusIcon from './svg/plus-rectangle';
 import MenuIcon from './svg/menu';
 
-type Props = {};
+type Props = {
+  onClickMenuHandler: () => void;
+};
 
 // TODO: dummy
 const avatarUrl =
@@ -13,14 +15,16 @@ const avatarUrl =
 const Header: React.FC<Props> = (props) => {
   return (
     <DivHeader>
-      <MenuIcon
-        style={{
-          width: '20px',
-          height: '20px',
-          fill: 'currentColor',
-          padding: '8px',
-        }}
-      />
+      <DivMenu onClick={props.onClickMenuHandler}>
+        <MenuIcon
+          style={{
+            width: '20px',
+            height: '20px',
+            fill: 'currentColor',
+            padding: '8px',
+          }}
+        />
+      </DivMenu>
       <PlusIcon
         style={{
           width: '16px',
@@ -34,6 +38,12 @@ const Header: React.FC<Props> = (props) => {
     </DivHeader>
   );
 };
+
+const DivMenu = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 const StyledPlusIcon = styled(PlusIcon)`
   width: 16px;
