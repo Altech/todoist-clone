@@ -33,6 +33,7 @@ type ID = string;
 
 // UI上、1行として表示されるものに一致する
 export type Task = {
+  id?: string;
   done: boolean;
   name: string;
   scheduleDate: Date | null;

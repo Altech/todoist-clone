@@ -34,6 +34,7 @@ const Mainbar: React.FC<Props> = (props) => {
         const newTasks: Array<TaskModel> = [];
         snapshot.forEach((obj) => {
           const task = obj.data();
+          task.id = obj.id;
           newTasks.push(task);
         });
         setTasks(newTasks);
@@ -54,6 +55,7 @@ const Mainbar: React.FC<Props> = (props) => {
         <DivContent>
           {tasks.map((task) => (
             <Task
+              key={task.id}
               done={task.done}
               name={task.name}
               schedule={task.scheduleDate}
