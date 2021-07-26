@@ -1,29 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import CalendarIcon from './svg/calendar';
 import MoreIcon from './svg/more-horizontal-f';
 import CircleUncheckedIcon from './svg/circle';
-import CircleCheckedIcon from './svg/chevron-circle-down';
+import CircleCheckedIcon from './svg/chevron-circle-down-f';
+import CircleWillBeCheckedIcon from './svg/chevron-circle-down';
 
-// Task
-//-------------------------------------
-type TaskProps = {};
+type TaskProps = {
+  done: boolean;
+  name: string;
+  schedule: Date | null;
+};
 
 const Task: React.FC<TaskProps> = (props) => {
   return (
     <DivTask>
       <DivDone>
-        <CircleUncheckedIcon />
-        <CircleCheckedIcon style={{ display: 'none' }} />
+        {props.done ? <CircleCheckedIcon /> : <CircleUncheckedIcon />}
       </DivDone>
       <DivCenter>
-        <DivName>TypeScript で Scheme の処理系を書いてみる</DivName>
+        <DivName>{props.name}</DivName>
         <DivSubline>
-          <DivSchedule>
-            <CalendarIcon />
-            9月18日
-          </DivSchedule>
+          {props.schedule && (
+            <DivSchedule>
+              <CalendarIcon />
+              9月18日
+            </DivSchedule>
+          )}
         </DivSubline>
       </DivCenter>
       <DivMenu className="control">
@@ -80,8 +84,6 @@ const DivSubline = styled.div`
 const DivSchedule = styled.div`
   display: flex;
   align-items: center;
-
-  display: none;
 `;
 
 const DivMenu = styled.div`

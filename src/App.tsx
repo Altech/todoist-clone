@@ -44,7 +44,7 @@ function App({}: AppProps) {
       ) as DocumentReference<Task>,
       {
         done: false,
-        name: 'TypeScript で Scheme の処理系を書いてみる',
+        name: 'TypeScript で Todoist のクローンを作ってみる',
         scheduleDate: new Date(2021, 7 - 1, 26),
       },
     )
@@ -65,10 +65,12 @@ function App({}: AppProps) {
         onClickMenuHandler={() => setSidebarExpanded((prev) => !prev)}
         onClickAvatarHandler={() => setStatusBarShown((prev) => !prev)}
       />
-      <DivBars>
-        {sidebarExpanded && <Sidebar />}
-        <Mainbar />
-      </DivBars>
+      {user && (
+        <DivBars>
+          {sidebarExpanded && <Sidebar />}
+          <Mainbar userId={user.uid} />
+        </DivBars>
+      )}
     </div>
   );
 }

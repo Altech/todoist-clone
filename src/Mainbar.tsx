@@ -1,13 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import {
+  addDoc,
+  collection,
+  CollectionReference,
+  getFirestore,
+  onSnapshot,
+} from 'firebase/firestore';
 
+import { Task as TaskModel } from './Model';
 import Task from './Task';
 import AddTask from './AddTask';
 import MoreHorizontalIcon from './svg/more-horizontal';
 
-type Props = {};
+// Firestore
+//----------------------------------------------
+const db = getFirestore();
+
+type Props = {
+  userId: string;
+};
 
 const Mainbar: React.FC<Props> = (props) => {
+  const [tasks, setTasks] = useState<Array<TaskModel>>([]);
+
+  useEffect(() => {
+    const tasksRef = collection(
+      db,
+      `users/${props.userId}/tasks`,
+    ) as CollectionReference<TaskModel>;
+    const unsubscribe = onSnapshot(tasksRef, {
+      next: (snapshot) => {
+        const newTasks: Array<TaskModel> = [];
+        snapshot.forEach((obj) => {
+          const task = obj.data();
+          newTasks.push(task);
+        });
+        setTasks(newTasks);
+      },
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <DivMainBar>
       <DivInnerContainer>
@@ -18,8 +52,13 @@ const Mainbar: React.FC<Props> = (props) => {
           </DivMenu>
         </DivHeader>
         <DivContent>
-          <Task />
-          <Task />
+          {tasks.map((task) => (
+            <Task
+              done={task.done}
+              name={task.name}
+              schedule={task.scheduleDate}
+            />
+          ))}
           <AddTask />
         </DivContent>
       </DivInnerContainer>
