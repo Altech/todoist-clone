@@ -64,7 +64,11 @@ const Mainbar: React.FC<Props> = (props) => {
             />
           ))}
           {taskEditing ? (
-            <EditTask onCancelClick={() => setTaskEditing(false)} />
+            <EditTask
+              userId={props.userId}
+              onCancelClick={() => setTaskEditing(false)}
+              onComplete={() => setTaskEditing(false)}
+            />
           ) : (
             <div onClick={() => setTaskEditing(true)}>
               <AddTask />

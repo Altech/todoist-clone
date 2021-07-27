@@ -1,8 +1,22 @@
+import {
+  addDoc,
+  collection,
+  CollectionReference,
+  getFirestore,
+} from 'firebase/firestore';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import type { Task as TaskModel } from './Model';
+
+// Firestore
+//----------------------------------------------
+const db = getFirestore();
+
 type Props = {
+  userId: string;
   onCancelClick: () => void;
+  onComplete: () => void;
 };
 
 const EditTask: React.FC<Props> = (props) => {
@@ -10,6 +24,22 @@ const EditTask: React.FC<Props> = (props) => {
   const [schedule, setSchedule] = useState<string>('');
 
   const canSubmit = name.length > 0;
+
+  const submitHandler = (e: any) => {
+    e.preventDefault();
+    const taskCollection = collection(
+      db,
+      `users/${props.userId}/tasks`,
+    ) as CollectionReference<TaskModel>;
+    const scheduleDate = schedule.length > 0 ? new Date(schedule) : null;
+    addDoc<TaskModel>(taskCollection, {
+      done: false,
+      name: name,
+      scheduleDate: scheduleDate,
+    })
+      .then((_docRef) => props.onComplete())
+      .catch((e) => console.log(e));
+  };
 
   return (
     <DivEditTask>
@@ -28,7 +58,7 @@ const EditTask: React.FC<Props> = (props) => {
           </DivSettings>
         </DivInputs>
         <DivButtons>
-          <button type="submit" disabled={!canSubmit}>
+          <button type="submit" disabled={!canSubmit} onClick={submitHandler}>
             タスクを追加
           </button>
           <button type="reset" onClick={props.onCancelClick}>
