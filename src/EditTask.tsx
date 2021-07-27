@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -6,17 +6,31 @@ type Props = {
 };
 
 const EditTask: React.FC<Props> = (props) => {
+  const [name, setName] = useState<string>('');
+  const [schedule, setSchedule] = useState<string>('');
+
+  const canSubmit = name.length > 0;
+
   return (
     <DivEditTask>
       <form>
         <DivInputs>
-          <InputName type="text" placeholder="タスク名"></InputName>
+          <InputName
+            type="text"
+            placeholder="タスク名"
+            onChange={(e) => setName(e.target.value)}
+          />
           <DivSettings>
-            <InputSchedule type="date"></InputSchedule>
+            <InputSchedule
+              type="date"
+              onChange={(e) => setSchedule(e.target.value)}
+            />
           </DivSettings>
         </DivInputs>
         <DivButtons>
-          <button type="submit">タスクを追加</button>
+          <button type="submit" disabled={!canSubmit}>
+            タスクを追加
+          </button>
           <button type="reset" onClick={props.onCancelClick}>
             キャンセル
           </button>
@@ -76,6 +90,10 @@ const DivButtons = styled.div`
     background-color: #ff9000;
     border-color: #ff9000;
     color: white;
+  }
+  button[type='submit']:disabled {
+    background-color: #ffce99;
+    border-color: #ffce99;
   }
 
   button[type='reset'] {
