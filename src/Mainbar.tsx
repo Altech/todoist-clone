@@ -8,8 +8,9 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 
-import { Task as TaskModel } from './Model';
+import type { Task as TaskModel } from './Model';
 import Task from './Task';
+import EditTask from './EditTask';
 import AddTask from './AddTask';
 import MoreHorizontalIcon from './svg/more-horizontal';
 
@@ -23,6 +24,7 @@ type Props = {
 
 const Mainbar: React.FC<Props> = (props) => {
   const [tasks, setTasks] = useState<Array<TaskModel>>([]);
+  const [taskEditing, setTaskEditing] = useState<boolean>(true);
 
   useEffect(() => {
     const tasksRef = collection(
@@ -61,7 +63,13 @@ const Mainbar: React.FC<Props> = (props) => {
               schedule={task.scheduleDate}
             />
           ))}
-          <AddTask />
+          {taskEditing ? (
+            <EditTask onCancelClick={() => setTaskEditing(false)} />
+          ) : (
+            <div onClick={() => setTaskEditing(true)}>
+              <AddTask />
+            </div>
+          )}
         </DivContent>
       </DivInnerContainer>
     </DivMainBar>
