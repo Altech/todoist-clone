@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import {
+  collection,
+  CollectionReference,
+  getFirestore,
+  onSnapshot,
+} from 'firebase/firestore';
 
 import type { Project as ProjectModel } from 'Model';
 
@@ -9,29 +15,44 @@ import CalendarAltIcon from './svg/calendar-alt';
 import ChevronDownIcon from './svg/chevron-down';
 import CircleFilledIcon from './svg/circle-f';
 
-type Props = {};
+// Firestore
+//----------------------------------------------
+const db = getFirestore();
 
-const colors = ['#9FC2E7', '#91CA5C', '#F29E4B', '#50A7EF', '#F4D246'];
+type Props = {
+  userId: string;
+};
 
-const projects: Array<ProjectModel> = [
-  {
-    id: 'foo',
-    name: 'General',
-    color: colors[0],
-  },
-  {
-    id: 'bar',
-    name: 'Programming',
-    color: colors[1],
-  },
-  {
-    id: 'baz',
-    name: 'Outdoor',
-    color: colors[2],
-  },
+const colors: string[] = [
+  '#9FC2E7',
+  '#91CA5C',
+  '#F29E4B',
+  '#50A7EF',
+  '#F4D246',
 ];
 
 const Sidebar: React.FC<Props> = (props) => {
+  const [projects, setProjects] = useState<ProjectModel[]>([]);
+
+  useEffect(() => {
+    const projectsRef = collection(
+      db,
+      `users/${props.userId}/projects`,
+    ) as CollectionReference<ProjectModel>;
+    const unsubscribe = onSnapshot(projectsRef, {
+      next: (snapshot) => {
+        const newProjects: ProjectModel[] = [];
+        snapshot.forEach((obj) => {
+          const project = obj.data();
+          project.id = obj.id;
+          newProjects.push(project);
+        });
+        setProjects(newProjects);
+      },
+    });
+    return unsubscribe;
+  });
+
   return (
     <DivSidebar>
       <div>

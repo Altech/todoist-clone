@@ -67,7 +67,7 @@ function App({}: AppProps) {
       />
       {user && (
         <DivBars>
-          {sidebarExpanded && <Sidebar />}
+          {sidebarExpanded && <Sidebar userId={user.uid} />}
           <Mainbar userId={user.uid} />
         </DivBars>
       )}
