@@ -7,7 +7,7 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 
-import type { Project as ProjectModel } from 'Model';
+import type { Project as ProjectModel, TaskGroup } from 'Model';
 
 import InboxIcon from './svg/inbox';
 import CalendarIcon from './svg/calendar';
@@ -21,6 +21,7 @@ const db = getFirestore();
 
 type Props = {
   userId: string;
+  switcher: (arg: TaskGroup) => void;
 };
 
 const colors: string[] = [
@@ -56,7 +57,10 @@ const Sidebar: React.FC<Props> = (props) => {
   return (
     <DivSidebar>
       <div>
-        <DivItem iconColor="#246fe0">
+        <DivItem
+          iconColor="#246fe0"
+          onClick={() => props.switcher({ project: null })}
+        >
           <InboxIcon />
           インボックス
           <span>{12}</span>
@@ -76,7 +80,11 @@ const Sidebar: React.FC<Props> = (props) => {
           プロジェクト
         </DivProjectsHeader>
         {projects.map((project) => (
-          <DivItem iconColor={project.color} iconIsSmall={true}>
+          <DivItem
+            iconColor={project.color}
+            iconIsSmall={true}
+            onClick={() => props.switcher(project.name)}
+          >
             <CircleFilledIcon />
             {project.name}
             <span>{12}</span>

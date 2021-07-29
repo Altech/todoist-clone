@@ -46,3 +46,7 @@ export type Project = {
   name: string;
   color?: string;
 };
+
+type ProjectName = string;
+type TaskFilter = { project: null }; // ここに色々入っていく
+export type TaskGroup = ProjectName | TaskFilter;

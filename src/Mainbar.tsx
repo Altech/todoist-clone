@@ -8,7 +8,7 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 
-import type { Task as TaskModel } from './Model';
+import type { Task as TaskModel, TaskGroup } from './Model';
 import Task from './Task';
 import EditTask from './EditTask';
 import AddTask from './AddTask';
@@ -20,6 +20,7 @@ const db = getFirestore();
 
 type Props = {
   userId: string;
+  taskGroup: TaskGroup;
 };
 
 const Mainbar: React.FC<Props> = (props) => {
@@ -45,11 +46,14 @@ const Mainbar: React.FC<Props> = (props) => {
     return unsubscribe;
   }, []);
 
+  const title =
+    typeof props.taskGroup === 'string' ? props.taskGroup : 'インボックス';
+
   return (
     <DivMainBar>
       <DivInnerContainer>
         <DivHeader>
-          <DivTitle>インボックス</DivTitle>
+          <DivTitle>{title}</DivTitle>
           <DivMenu className="control">
             <MoreHorizontalIcon />
           </DivMenu>

@@ -8,7 +8,7 @@ import {
   setDoc,
 } from 'firebase/firestore';
 
-import type { Task } from './Model';
+import type { Task, TaskGroup } from './Model';
 import useAuthState from './util/useAuthState';
 import SignInStatusBar from './SignInStatusBar';
 import Header from './Header';
@@ -29,6 +29,9 @@ function App({}: AppProps) {
   const [user, loading] = useAuthState();
   const [statusBarShown, setStatusBarShown] = useState<boolean>(false);
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(true);
+  const [focusedTaskGroup, setFocusedTaskGroup] = useState<TaskGroup>({
+    project: null,
+  });
 
   useEffect(() => {
     if (block) return;
@@ -67,8 +70,10 @@ function App({}: AppProps) {
       />
       {user && (
         <DivBars>
-          {sidebarExpanded && <Sidebar userId={user.uid} />}
-          <Mainbar userId={user.uid} />
+          {sidebarExpanded && (
+            <Sidebar userId={user.uid} switcher={setFocusedTaskGroup} />
+          )}
+          <Mainbar userId={user.uid} taskGroup={focusedTaskGroup} />
         </DivBars>
       )}
     </div>
