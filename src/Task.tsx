@@ -11,11 +11,12 @@ type TaskProps = {
   done: boolean;
   name: string;
   schedule: Date | null;
+  showControl: boolean;
 };
 
 const Task: React.FC<TaskProps> = (props) => {
   return (
-    <DivTask>
+    <DivTask showControl={props.showControl}>
       <DivDone>
         {props.done ? <CircleCheckedIcon /> : <CircleUncheckedIcon />}
       </DivDone>
@@ -37,14 +38,14 @@ const Task: React.FC<TaskProps> = (props) => {
   );
 };
 
-const DivTask = styled.div`
+const DivTask = styled.div<{ showControl: boolean }>`
   display: flex;
   border-bottom: 1px solid rgb(240, 240, 240);
   padding-top: 8px;
   min-height: 28px;
 
   .control {
-    display: none;
+    display: ${(props) => (props.showControl ? 'block' : 'none')};
   }
   &:hover .control {
     display: block;
@@ -88,7 +89,6 @@ const DivSchedule = styled.div`
 
 const DivMenu = styled.div`
   margin-left: auto;
-  display: none;
   svg {
     padding-right: 4px;
     position: relative;

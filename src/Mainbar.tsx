@@ -12,6 +12,7 @@ import type { Task as TaskModel, TaskGroup } from './Model';
 import Task from './Task';
 import EditTask from './EditTask';
 import AddTask from './AddTask';
+import TaskDropDown from './TaskDropDown';
 import MoreHorizontalIcon from './svg/more-horizontal';
 
 // Firestore
@@ -26,6 +27,9 @@ type Props = {
 const Mainbar: React.FC<Props> = (props) => {
   const [tasks, setTasks] = useState<Array<TaskModel>>([]);
   const [taskEditing, setTaskEditing] = useState<boolean>(false);
+  const [dropDownTask, setDropDownTask] = useState<string | undefined>(
+    undefined,
+  );
 
   const dbPath =
     props.taskGroup.__type === 'project'
@@ -64,12 +68,18 @@ const Mainbar: React.FC<Props> = (props) => {
         </DivHeader>
         <DivContent>
           {tasks.map((task) => (
-            <Task
-              key={task.id}
-              done={task.done}
-              name={task.name}
-              schedule={task.scheduleDate}
-            />
+            <div style={{ position: 'relative' }}>
+              <div onClick={() => setDropDownTask(task.id)}>
+                <Task
+                  key={task.id}
+                  done={task.done}
+                  name={task.name}
+                  schedule={task.scheduleDate}
+                  showControl={dropDownTask === task.id}
+                />
+              </div>
+              {dropDownTask === task.id && <TaskDropDown />}
+            </div>
           ))}
           {taskEditing ? (
             <EditTask
