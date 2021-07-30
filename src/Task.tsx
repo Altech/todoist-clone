@@ -93,7 +93,8 @@ const DivMenu = styled.div`
     padding-right: 4px;
     position: relative;
     top: 3px;
-    width: 14px;
+    width: 13px;
+    height: 13px;
     fill: #9f9f9f;
   }
   &:hover {
