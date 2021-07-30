@@ -8,7 +8,8 @@ import {
   setDoc,
 } from 'firebase/firestore';
 
-import type { Task, TaskGroup } from './Model';
+import type { TaskGroup } from './Model';
+import { Inbox } from './Model';
 import useAuthState from './util/useAuthState';
 import SignInStatusBar from './SignInStatusBar';
 import Header from './Header';
@@ -29,37 +30,7 @@ function App({}: AppProps) {
   const [user, loading] = useAuthState();
   const [statusBarShown, setStatusBarShown] = useState<boolean>(false);
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(true);
-  const [focusedTaskGroup, setFocusedTaskGroup] = useState<TaskGroup>({
-    project: null,
-  });
-
-  useEffect(() => {
-    if (block) return;
-
-    if (!user) return;
-    setDoc<Task>(
-      doc(
-        db,
-        'users',
-        user.uid,
-        'tasks',
-        'testuidtestuidWithScheduledDate',
-      ) as DocumentReference<Task>,
-      {
-        done: false,
-        name: 'TypeScript で Todoist のクローンを作ってみる',
-        scheduleDate: new Date(2021, 7 - 1, 26),
-      },
-    )
-      .then((docRef) => {
-        console.log('Document written.');
-      })
-      .catch((e) => {
-        console.error('Error adding document: ', e);
-      });
-  }, [user, loading]);
-
-  if (loading) return <div style={{ color: '#ccc' }}>loading...</div>;
+  const [focusedTaskGroup, setFocusedTaskGroup] = useState<TaskGroup>(Inbox);
 
   return (
     <div className="App">

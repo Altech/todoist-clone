@@ -15,6 +15,7 @@ const db = getFirestore();
 
 type Props = {
   userId: string;
+  dbPath: string;
   onCancelClick: () => void;
   onComplete: () => void;
 };
@@ -29,10 +30,11 @@ const EditTask: React.FC<Props> = (props) => {
     e.preventDefault();
     const taskCollection = collection(
       db,
-      `users/${props.userId}/tasks`,
+      props.dbPath,
     ) as CollectionReference<TaskModel>;
     const scheduleDate = schedule.length > 0 ? new Date(schedule) : null;
     addDoc<TaskModel>(taskCollection, {
+      __type: 'task',
       done: false,
       name: name,
       scheduleDate: scheduleDate,

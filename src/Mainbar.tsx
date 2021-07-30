@@ -25,29 +25,33 @@ type Props = {
 
 const Mainbar: React.FC<Props> = (props) => {
   const [tasks, setTasks] = useState<Array<TaskModel>>([]);
-  const [taskEditing, setTaskEditing] = useState<boolean>(true);
+  const [taskEditing, setTaskEditing] = useState<boolean>(false);
+
+  const dbPath =
+    props.taskGroup.__type === 'project'
+      ? `users/${props.userId}/projects/${props.taskGroup.id}/tasks`
+      : `users/${props.userId}/tasks`;
+  const title =
+    props.taskGroup.__type === 'project'
+      ? props.taskGroup.name
+      : 'インボックス';
 
   useEffect(() => {
-    const tasksRef = collection(
-      db,
-      `users/${props.userId}/tasks`,
-    ) as CollectionReference<TaskModel>;
+    const tasksRef = collection(db, dbPath) as CollectionReference<TaskModel>;
     const unsubscribe = onSnapshot(tasksRef, {
       next: (snapshot) => {
         const newTasks: Array<TaskModel> = [];
         snapshot.forEach((obj) => {
           const task = obj.data();
           task.id = obj.id;
+          task.__type = 'task';
           newTasks.push(task);
         });
         setTasks(newTasks);
       },
     });
     return unsubscribe;
-  }, []);
-
-  const title =
-    typeof props.taskGroup === 'string' ? props.taskGroup : 'インボックス';
+  }, [dbPath]);
 
   return (
     <DivMainBar>
@@ -70,6 +74,7 @@ const Mainbar: React.FC<Props> = (props) => {
           {taskEditing ? (
             <EditTask
               userId={props.userId}
+              dbPath={dbPath}
               onCancelClick={() => setTaskEditing(false)}
               onComplete={() => setTaskEditing(false)}
             />

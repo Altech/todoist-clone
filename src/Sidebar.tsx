@@ -46,13 +46,14 @@ const Sidebar: React.FC<Props> = (props) => {
         snapshot.forEach((obj) => {
           const project = obj.data();
           project.id = obj.id;
+          project.__type = 'project';
           newProjects.push(project);
         });
         setProjects(newProjects);
       },
     });
     return unsubscribe;
-  });
+  }, []);
 
   return (
     <DivSidebar>
@@ -81,9 +82,10 @@ const Sidebar: React.FC<Props> = (props) => {
         </DivProjectsHeader>
         {projects.map((project) => (
           <DivItem
+            key={project.name}
             iconColor={project.color}
             iconIsSmall={true}
-            onClick={() => props.switcher(project.name)}
+            onClick={() => props.switcher(project)}
           >
             <CircleFilledIcon />
             {project.name}

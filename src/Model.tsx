@@ -33,6 +33,7 @@ type ID = string;
 
 // UI上、1行として表示されるものに一致する
 export type Task = {
+  __type: 'task';
   id?: string;
   done: boolean;
   name: string;
@@ -42,11 +43,12 @@ export type Task = {
 };
 
 export type Project = {
+  __type: 'project';
   id?: string;
   name: string;
   color?: string;
 };
 
-type ProjectName = string;
-type TaskFilter = { project: null }; // ここに色々入っていく
-export type TaskGroup = ProjectName | TaskFilter;
+export type InboxType = { __type: 'inbox' };
+export type TaskGroup = Project | InboxType;
+export const Inbox = { __type: 'inbox' };
