@@ -6,11 +6,14 @@ import MoreIcon from './svg/more-horizontal-f';
 import CircleUncheckedIcon from './svg/circle';
 import CircleCheckedIcon from './svg/chevron-circle-down-f';
 import CircleWillBeCheckedIcon from './svg/chevron-circle-down';
+import type { Timestamp } from 'firebase/firestore';
 
 type TaskProps = {
   done: boolean;
   name: string;
-  schedule: Date | null;
+  schedule: Timestamp | null;
+  onCenterClick: () => void;
+  onMenuClick: () => void;
   showControl: boolean;
 };
 
@@ -20,18 +23,20 @@ const Task: React.FC<TaskProps> = (props) => {
       <DivDone>
         {props.done ? <CircleCheckedIcon /> : <CircleUncheckedIcon />}
       </DivDone>
-      <DivCenter>
+      <DivCenter onClick={props.onCenterClick}>
         <DivName>{props.name}</DivName>
         <DivSubline>
           {props.schedule && (
             <DivSchedule>
               <CalendarIcon />
-              9月18日
+              {`${props.schedule.toDate().getMonth() + 1}月${props.schedule
+                .toDate()
+                .getDate()}日`}
             </DivSchedule>
           )}
         </DivSubline>
       </DivCenter>
-      <DivMenu className="control">
+      <DivMenu className="control" onClick={props.onMenuClick}>
         <MoreIcon />
       </DivMenu>
     </DivTask>
@@ -62,7 +67,11 @@ const DivDone = styled.div`
   }
 `;
 
-const DivCenter = styled.div``;
+const DivCenter = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 const DivName = styled.div`
   color: #202020;

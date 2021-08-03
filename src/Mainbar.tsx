@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
-  addDoc,
   collection,
   CollectionReference,
+  deleteDoc,
+  doc,
   getFirestore,
   onSnapshot,
 } from 'firebase/firestore';
@@ -26,12 +27,21 @@ type Props = {
 
 const Mainbar: React.FC<Props> = (props) => {
   const [tasks, setTasks] = useState<Array<TaskModel>>([]);
-  const [taskEditing, setTaskEditing] = useState<boolean>(false);
+  const [tasksEditing, setTasksEditing] = useState<{
+    [key: string]: boolean | undefined;
+  }>({});
+  const [newTaskEditing, setNewTaskEditing] = useState<boolean>(false);
   const [dropDownTask, setDropDownTask] = useState<string | undefined>(
     undefined,
   );
+  const setTaskEditing = (taskId: string | undefined, value: boolean) => {
+    if (!taskId) return;
+    const nextState = Object.assign({}, tasksEditing);
+    nextState[taskId] = value;
+    setTasksEditing(nextState);
+  };
 
-  const dbPath =
+  const collectionPath =
     props.taskGroup.__type === 'project'
       ? `users/${props.userId}/projects/${props.taskGroup.id}/tasks`
       : `users/${props.userId}/tasks`;
@@ -41,7 +51,10 @@ const Mainbar: React.FC<Props> = (props) => {
       : 'インボックス';
 
   useEffect(() => {
-    const tasksRef = collection(db, dbPath) as CollectionReference<TaskModel>;
+    const tasksRef = collection(
+      db,
+      collectionPath,
+    ) as CollectionReference<TaskModel>;
     const unsubscribe = onSnapshot(tasksRef, {
       next: (snapshot) => {
         const newTasks: Array<TaskModel> = [];
@@ -55,7 +68,15 @@ const Mainbar: React.FC<Props> = (props) => {
       },
     });
     return unsubscribe;
-  }, [dbPath]);
+  }, [collectionPath]);
+
+  const deleteTask = (task: TaskModel) => {
+    const taskCollection = collection(
+      db,
+      collectionPath,
+    ) as CollectionReference<TaskModel>;
+    deleteDoc(doc(taskCollection, task.id)).catch((e) => console.log(e));
+  };
 
   return (
     <DivMainBar>
@@ -67,29 +88,44 @@ const Mainbar: React.FC<Props> = (props) => {
           </DivMenu>
         </DivHeader>
         <DivContent>
-          {tasks.map((task) => (
-            <div style={{ position: 'relative' }}>
-              <div onClick={() => setDropDownTask(task.id)}>
+          {tasks.map((task) =>
+            tasksEditing[task.id as string] ? (
+              <EditTask
+                userId={props.userId}
+                collectionPath={collectionPath}
+                task={task}
+                onCancelClick={() => setTaskEditing(task.id, false)}
+                onComplete={() => setTaskEditing(task.id, false)}
+              />
+            ) : (
+              <div style={{ position: 'relative' }}>
                 <Task
                   key={task.id}
                   done={task.done}
                   name={task.name}
                   schedule={task.scheduleDate}
+                  onCenterClick={() => setTaskEditing(task.id, true)}
+                  onMenuClick={() => setDropDownTask(task.id)}
                   showControl={dropDownTask === task.id}
                 />
+                {dropDownTask === task.id && (
+                  <TaskDropDown
+                    onEditClick={() => setTaskEditing(task.id, true)}
+                    onDeleteClick={() => deleteTask(task)}
+                  />
+                )}
               </div>
-              {dropDownTask === task.id && <TaskDropDown />}
-            </div>
-          ))}
-          {taskEditing ? (
+            ),
+          )}
+          {newTaskEditing ? (
             <EditTask
               userId={props.userId}
-              dbPath={dbPath}
-              onCancelClick={() => setTaskEditing(false)}
-              onComplete={() => setTaskEditing(false)}
+              collectionPath={collectionPath}
+              onCancelClick={() => setNewTaskEditing(false)}
+              onComplete={() => setNewTaskEditing(false)}
             />
           ) : (
-            <div onClick={() => setTaskEditing(true)}>
+            <div onClick={() => setNewTaskEditing(true)}>
               <AddTask />
             </div>
           )}

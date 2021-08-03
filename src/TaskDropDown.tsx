@@ -4,17 +4,20 @@ import styled from 'styled-components';
 import PencilIcon from './svg/pencil';
 import TrashIcon from './svg/trash';
 
-type Props = {};
+type Props = {
+  onEditClick: () => void;
+  onDeleteClick: () => void;
+};
 
-const TaskDropDown: React.FC<Props> = () => {
+const TaskDropDown: React.FC<Props> = (props) => {
   return (
     <DivTaskDropDown>
       <ul>
-        <li>
+        <li onClick={props.onEditClick}>
           <PencilIcon />
           タスクを編集
         </li>
-        <li>
+        <li onClick={props.onDeleteClick}>
           <TrashIcon />
           タスクを削除
         </li>

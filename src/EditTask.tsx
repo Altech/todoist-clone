@@ -2,27 +2,39 @@ import {
   addDoc,
   collection,
   CollectionReference,
+  doc,
   getFirestore,
+  setDoc,
+  Timestamp,
 } from 'firebase/firestore';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import type { Task as TaskModel } from './Model';
-
 // Firestore
 //----------------------------------------------
 const db = getFirestore();
 
 type Props = {
   userId: string;
-  dbPath: string;
+  collectionPath: string;
+  task?: TaskModel;
   onCancelClick: () => void;
   onComplete: () => void;
 };
 
+function formatDate(date: Date): string {
+  const y = date.getFullYear().toString();
+  const m = ('0' + (date.getMonth() + 1)).slice(-2);
+  const d = ('0' + date.getDate()).slice(-2);
+  return `${y}-${m}-${d}`;
+}
+
 const EditTask: React.FC<Props> = (props) => {
-  const [name, setName] = useState<string>('');
-  const [schedule, setSchedule] = useState<string>('');
+  const [name, setName] = useState<string>(props.task?.name || '');
+  const [scheduleDate, setScheduleDate] = useState<Timestamp | null>(
+    props.task?.scheduleDate || null,
+  );
 
   const canSubmit = name.length > 0;
 
@@ -30,17 +42,24 @@ const EditTask: React.FC<Props> = (props) => {
     e.preventDefault();
     const taskCollection = collection(
       db,
-      props.dbPath,
+      props.collectionPath,
     ) as CollectionReference<TaskModel>;
-    const scheduleDate = schedule.length > 0 ? new Date(schedule) : null;
-    addDoc<TaskModel>(taskCollection, {
+    const docData: TaskModel = {
       __type: 'task',
       done: false,
       name: name,
       scheduleDate: scheduleDate,
-    })
-      .then((_docRef) => props.onComplete())
-      .catch((e) => console.log(e));
+    };
+    if (props.task) {
+      const docRef = doc(taskCollection, props.task.id);
+      setDoc(docRef, docData)
+        .then((_docRef) => props.onComplete())
+        .catch((e) => console.log(e));
+    } else {
+      addDoc<TaskModel>(taskCollection, docData)
+        .then((_docRef) => props.onComplete())
+        .catch((e) => console.log(e));
+    }
   };
 
   return (
@@ -50,12 +69,20 @@ const EditTask: React.FC<Props> = (props) => {
           <InputName
             type="text"
             placeholder="タスク名"
+            value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <DivSettings>
             <InputSchedule
               type="date"
-              onChange={(e) => setSchedule(e.target.value)}
+              value={scheduleDate ? formatDate(scheduleDate.toDate()) : ''}
+              onChange={(e) =>
+                setScheduleDate(
+                  e.target.value.length > 0
+                    ? Timestamp.fromDate(new Date(e.target.value))
+                    : null,
+                )
+              }
             />
           </DivSettings>
         </DivInputs>
@@ -85,6 +112,7 @@ const DivInputs = styled.div`
 
 const InputName = styled.input`
   border: none;
+  width: 100%;
   &:focus {
     outline: none;
   }
@@ -97,7 +125,7 @@ const DivSettings = styled.div`
 const InputSchedule = styled.input`
   border-radius: 5px;
   border: 1px solid #d6d6d6;
-  width: 110px;
+  width: 138px;
   height: 26px;
   color: rgba(0, 0, 0, 0.88);
 `;

@@ -29,6 +29,8 @@
 // アクティビティがある。（ログ的なもの）
 //   例：あるタスクを追加した
 
+import type { Timestamp } from 'firebase/firestore';
+
 type ID = string;
 
 // UI上、1行として表示されるものに一致する
@@ -37,7 +39,7 @@ export type Task = {
   id?: string;
   done: boolean;
   name: string;
-  scheduleDate: Date | null;
+  scheduleDate: Timestamp | null;
   // parentTaskId?: ID; // 階層的に構築できる(機能実装はしないかも) ... こういう場合どうするんだろ？
   // projectId: ID; // Firestore の設計によってはパスに入るかもしれない
 };
