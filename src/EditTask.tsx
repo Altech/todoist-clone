@@ -16,7 +16,6 @@ import type { Task as TaskModel } from './Model';
 const db = getFirestore();
 
 type Props = {
-  userId: string;
   collectionPath: string;
   task?: TaskModel;
   onCancelClick: () => void;

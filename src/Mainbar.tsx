@@ -15,17 +15,18 @@ import EditTask from './EditTask';
 import AddTask from './AddTask';
 import TaskDropDown from './TaskDropDown';
 import MoreHorizontalIcon from './svg/more-horizontal';
+import { useUserValue } from './context/user-context';
 
 // Firestore
 //----------------------------------------------
 const db = getFirestore();
 
 type Props = {
-  userId: string;
   taskGroup: TaskGroup;
 };
 
 const Mainbar: React.FC<Props> = (props) => {
+  const user = useUserValue();
   const [tasks, setTasks] = useState<Array<TaskModel>>([]);
   const [tasksEditing, setTasksEditing] = useState<{
     [key: string]: boolean | undefined;
@@ -43,8 +44,8 @@ const Mainbar: React.FC<Props> = (props) => {
 
   const collectionPath =
     props.taskGroup.__type === 'project'
-      ? `users/${props.userId}/projects/${props.taskGroup.id}/tasks`
-      : `users/${props.userId}/tasks`;
+      ? `users/${user!.uid}/projects/${props.taskGroup.id}/tasks`
+      : `users/${user!.uid}/tasks`;
   const title =
     props.taskGroup.__type === 'project'
       ? props.taskGroup.name
@@ -91,7 +92,6 @@ const Mainbar: React.FC<Props> = (props) => {
           {tasks.map((task) =>
             tasksEditing[task.id as string] ? (
               <EditTask
-                userId={props.userId}
                 collectionPath={collectionPath}
                 task={task}
                 onCancelClick={() => setTaskEditing(task.id, false)}
@@ -119,7 +119,6 @@ const Mainbar: React.FC<Props> = (props) => {
           )}
           {newTaskEditing ? (
             <EditTask
-              userId={props.userId}
               collectionPath={collectionPath}
               onCancelClick={() => setNewTaskEditing(false)}
               onComplete={() => setNewTaskEditing(false)}

@@ -14,13 +14,13 @@ import CalendarIcon from './svg/calendar';
 import CalendarAltIcon from './svg/calendar-alt';
 import ChevronDownIcon from './svg/chevron-down';
 import CircleFilledIcon from './svg/circle-f';
+import { useUserValue } from './context/user-context';
 
 // Firestore
 //----------------------------------------------
 const db = getFirestore();
 
 type Props = {
-  userId: string;
   switcher: (arg: TaskGroup) => void;
 };
 
@@ -32,13 +32,14 @@ const colors: string[] = [
   '#F4D246',
 ];
 
-const Sidebar: React.FC<Props> = (props) => {
+const useProjects = () => {
+  const user = useUserValue();
   const [projects, setProjects] = useState<ProjectModel[]>([]);
 
   useEffect(() => {
     const projectsRef = collection(
       db,
-      `users/${props.userId}/projects`,
+      `users/${user!.uid}/projects`,
     ) as CollectionReference<ProjectModel>;
     const unsubscribe = onSnapshot(projectsRef, {
       next: (snapshot) => {
@@ -54,6 +55,12 @@ const Sidebar: React.FC<Props> = (props) => {
     });
     return unsubscribe;
   }, []);
+
+  return [projects, setProjects] as const;
+};
+
+const Sidebar: React.FC<Props> = (props) => {
+  const [projects, setProjects] = useProjects();
 
   return (
     <DivSidebar>
