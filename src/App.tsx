@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import type { TaskGroup } from './Model';
 import { Inbox } from './Model';
-import useAuthState from './util/useAuthState';
+import useAuthState from './hooks/useAuthState';
 import SignInStatusBar from './SignInStatusBar';
 import Header from './Header';
 import Sidebar from './Sidebar';
