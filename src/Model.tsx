@@ -53,4 +53,4 @@ export type Project = {
 
 export type InboxType = { __type: 'inbox' };
 export type TaskGroup = Project | InboxType;
-export const Inbox = { __type: 'inbox' };
+export const Inbox: InboxType = { __type: 'inbox' };

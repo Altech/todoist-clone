@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {
-  addDoc,
-  doc,
-  DocumentReference,
-  getFirestore,
-  setDoc,
-} from 'firebase/firestore';
 
 import type { TaskGroup } from './Model';
 import { Inbox } from './Model';
@@ -18,13 +11,7 @@ import Mainbar from './Mainbar';
 
 import './App.css';
 
-// Firestore
-//----------------------------------------------
-const db = getFirestore();
-
 interface AppProps {}
-
-var block = false;
 
 function App({}: AppProps) {
   const [user, loading] = useAuthState();
