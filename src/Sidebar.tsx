@@ -1,24 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import {
-  collection,
-  CollectionReference,
-  getFirestore,
-  onSnapshot,
-} from 'firebase/firestore';
 
-import type { Project as ProjectModel, TaskGroup } from 'Model';
+import type { TaskGroup } from './Model';
+import { Inbox } from './Model';
+import { ProjectsContext } from './context/projects-context';
 
 import InboxIcon from './svg/inbox';
 import CalendarIcon from './svg/calendar';
 import CalendarAltIcon from './svg/calendar-alt';
 import ChevronDownIcon from './svg/chevron-down';
 import CircleFilledIcon from './svg/circle-f';
-import { useUserValue } from './context/user-context';
-
-// Firestore
-//----------------------------------------------
-const db = getFirestore();
 
 type Props = {
   switcher: (arg: TaskGroup) => void;
@@ -32,43 +23,13 @@ const colors: string[] = [
   '#F4D246',
 ];
 
-const useProjects = () => {
-  const user = useUserValue();
-  const [projects, setProjects] = useState<ProjectModel[]>([]);
-
-  useEffect(() => {
-    const projectsRef = collection(
-      db,
-      `users/${user!.uid}/projects`,
-    ) as CollectionReference<ProjectModel>;
-    const unsubscribe = onSnapshot(projectsRef, {
-      next: (snapshot) => {
-        const newProjects: ProjectModel[] = [];
-        snapshot.forEach((obj) => {
-          const project = obj.data();
-          project.id = obj.id;
-          project.__type = 'project';
-          newProjects.push(project);
-        });
-        setProjects(newProjects);
-      },
-    });
-    return unsubscribe;
-  }, []);
-
-  return [projects, setProjects] as const;
-};
-
 const Sidebar: React.FC<Props> = (props) => {
-  const [projects, setProjects] = useProjects();
+  const projects = useContext(ProjectsContext);
 
   return (
     <DivSidebar>
       <div>
-        <DivItem
-          iconColor="#246fe0"
-          onClick={() => props.switcher({ project: null })}
-        >
+        <DivItem iconColor="#246fe0" onClick={() => props.switcher(Inbox)}>
           <InboxIcon />
           インボックス
           <span>{12}</span>

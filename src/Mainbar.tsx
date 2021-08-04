@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import {
   collection,
@@ -15,7 +15,7 @@ import EditTask from './EditTask';
 import AddTask from './AddTask';
 import TaskDropDown from './TaskDropDown';
 import MoreHorizontalIcon from './svg/more-horizontal';
-import { useUserValue } from './context/user-context';
+import { UserContext } from './context/user-context';
 
 // Firestore
 //----------------------------------------------
@@ -26,7 +26,7 @@ type Props = {
 };
 
 const Mainbar: React.FC<Props> = (props) => {
-  const user = useUserValue();
+  const user = useContext(UserContext);
   const [tasks, setTasks] = useState<Array<TaskModel>>([]);
   const [tasksEditing, setTasksEditing] = useState<{
     [key: string]: boolean | undefined;

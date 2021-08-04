@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
-import { useUserValue } from './context/user-context';
+import { UserContext } from './context/user-context';
 import type { TaskGroup } from './Model';
 import { Inbox } from './Model';
 import SignInStatusBar from './SignInStatusBar';
@@ -10,7 +10,7 @@ import Sidebar from './Sidebar';
 import Mainbar from './Mainbar';
 
 const AppWithContext: React.FC = () => {
-  const user = useUserValue();
+  const user = useContext(UserContext);
   const [statusBarShown, setStatusBarShown] = useState<boolean>(false);
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(true);
   const [focusedTaskGroup, setFocusedTaskGroup] = useState<TaskGroup>(Inbox);

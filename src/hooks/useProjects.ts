@@ -1,16 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import {
+  collection,
+  CollectionReference,
+  onSnapshot,
+} from 'firebase/firestore';
 
-// Firestore
-//----------------------------------------------
-const db = getFirestore();
+import { UserContext } from '../context/user-context';
+import { FirestoreContext } from '../context/firestore-context';
+import type { Project as ProjectModel } from '../Model';
 
-export const useProjects = (userId: string) => {
+const useProjects = (): ProjectModel[] => {
+  const user = useContext(UserContext);
+  const db = useContext(FirestoreContext);
   const [projects, setProjects] = useState<ProjectModel[]>([]);
 
   useEffect(() => {
+    if (!user) {
+      setProjects([]);
+      return;
+    }
     const projectsRef = collection(
       db,
-      `users/${userId}/projects`,
+      `users/${user!.uid}/projects`,
     ) as CollectionReference<ProjectModel>;
     const unsubscribe = onSnapshot(projectsRef, {
       next: (snapshot) => {
@@ -25,7 +36,9 @@ export const useProjects = (userId: string) => {
       },
     });
     return unsubscribe;
-  }, []);
+  }, [user]);
 
-  return [projects, setProjects] as const;
+  return projects;
 };
+
+export default useProjects;
