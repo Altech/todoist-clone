@@ -1,54 +1,49 @@
-import React, { useState } from 'react';
-import { signInWithEmailAndPassword, User } from 'firebase/auth';
+import React, { useContext, useState } from 'react';
+import styled from 'styled-components';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
-import './SignInStatusBar.css';
 import { firebaseAuth } from './firebase';
+import { UserContext } from './context/user-context';
 
-const SignInStatusBar = (props: { user: User | null }) => {
-  const userId = props.user?.uid;
-  const signedIn = !!props.user;
-
+const SignInStatusBar = () => {
+  const user = useContext(UserContext);
   // states for sign in
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-
   // states for sign up
   const [expand, setExpand] = useState<boolean>(false);
 
-  // TODO: useCallback
   const loginHandler = (e: any) => {
     e.preventDefault();
+    // This change will trigger `onAuthStateChanged`
     signInWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredential) => {
         console.log('sign in success.');
-        // The change will be triggered via `onAuthStateChanged`
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
         console.log(error);
         alert('Failed to sign in');
       });
     return false;
   };
 
-  if (signedIn) {
+  if (user) {
     return (
-      <div className="SignInStatusBar SignIn">
-        <div>▷ user ID: {userId}</div>
+      <DivSignInStatusBar type={'SignIn'}>
+        <div>▷ user ID: {user.uid}</div>
         <button
           onClick={() => {
             firebaseAuth.signOut();
-            // The change will be triggered via `onAuthStateChanged`
+            // This change will trigger `onAuthStateChanged`
           }}
         >
           Sign Out
         </button>
-      </div>
+      </DivSignInStatusBar>
     );
   } else {
     return (
-      <div className="SignInStatusBar SignUp">
+      <DivSignInStatusBar type={'SignUp'}>
         {
           <div>
             <span onClick={() => setExpand((prev) => !prev)}>
@@ -83,9 +78,25 @@ const SignInStatusBar = (props: { user: User | null }) => {
             (TODO: ui)
           </div>
         )}
-      </div>
+      </DivSignInStatusBar>
     );
   }
 };
+
+const DivSignInStatusBar = styled.div<{ type: 'SignIn' | 'SignUp' }>`
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background: rgb(89, 89, 89);
+  color: white;
+  padding: 14px;
+
+  display: ${(props) => (props.type === 'SignIn' ? 'flex' : 'block')};
+
+  button {
+    margin-left: ${(props) => (props.type === 'SignIn' ? 'auto' : '0')};
+  }
+`;
 
 export default SignInStatusBar;

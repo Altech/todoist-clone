@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import type { TaskGroup } from './Model';
@@ -11,10 +11,6 @@ import CalendarAltIcon from './svg/calendar-alt';
 import ChevronDownIcon from './svg/chevron-down';
 import CircleFilledIcon from './svg/circle-f';
 
-type Props = {
-  switcher: (arg: TaskGroup) => void;
-};
-
 const colors: string[] = [
   '#9FC2E7',
   '#91CA5C',
@@ -22,6 +18,10 @@ const colors: string[] = [
   '#50A7EF',
   '#F4D246',
 ];
+
+type Props = {
+  switcher: (arg: TaskGroup) => void;
+};
 
 const Sidebar: React.FC<Props> = (props) => {
   const projects = useContext(ProjectsContext);

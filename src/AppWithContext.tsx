@@ -17,7 +17,7 @@ const AppWithContext: React.FC = () => {
 
   return (
     <div>
-      {(statusBarShown || !user) && <SignInStatusBar user={user} />}
+      {(statusBarShown || !user) && <SignInStatusBar />}
       <Header
         onClickMenuHandler={() => setSidebarExpanded((prev) => !prev)}
         onClickAvatarHandler={() => setStatusBarShown((prev) => !prev)}

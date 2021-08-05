@@ -10,16 +10,14 @@ import {
 } from 'firebase/firestore';
 
 import type { Task as TaskModel, TaskGroup } from './Model';
+import { UserContext } from './context/user-context';
+import { FirestoreContext } from './context/firestore-context';
 import Task from './Task';
 import EditTask from './EditTask';
 import AddTask from './AddTask';
 import TaskDropDown from './TaskDropDown';
-import MoreHorizontalIcon from './svg/more-horizontal';
-import { UserContext } from './context/user-context';
 
-// Firestore
-//----------------------------------------------
-const db = getFirestore();
+import MoreHorizontalIcon from './svg/more-horizontal';
 
 type Props = {
   taskGroup: TaskGroup;
@@ -27,6 +25,7 @@ type Props = {
 
 const Mainbar: React.FC<Props> = (props) => {
   const user = useContext(UserContext);
+  const db = useContext(FirestoreContext);
   const [tasks, setTasks] = useState<Array<TaskModel>>([]);
   const [tasksEditing, setTasksEditing] = useState<{
     [key: string]: boolean | undefined;

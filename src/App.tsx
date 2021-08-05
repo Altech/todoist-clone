@@ -1,13 +1,14 @@
 import React from 'react';
 
-import './App.css';
 import AppWithContext from './AppWithContext';
 import { ProjectsProvider } from './context/projects-context';
 import { UserProvider } from './context/user-context';
 
-interface AppProps {}
+import './App.css';
 
-function App({}: AppProps) {
+interface Props {}
+
+function App({}: Props) {
   return (
     <div className="App">
       <UserProvider>
