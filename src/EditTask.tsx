@@ -1,19 +1,16 @@
+import React, { useContext, useState } from 'react';
+import styled from 'styled-components';
 import {
   addDoc,
   collection,
   CollectionReference,
   doc,
-  getFirestore,
   setDoc,
   Timestamp,
 } from 'firebase/firestore';
-import React, { useState } from 'react';
-import styled from 'styled-components';
 
 import type { Task as TaskModel } from './Model';
-// Firestore
-//----------------------------------------------
-const db = getFirestore();
+import { FirestoreContext } from './context/firestore-context';
 
 type Props = {
   collectionPath: string;
@@ -30,6 +27,7 @@ function formatDate(date: Date): string {
 }
 
 const EditTask: React.FC<Props> = (props) => {
+  const db = useContext(FirestoreContext);
   const [name, setName] = useState<string>(props.task?.name || '');
   const [scheduleDate, setScheduleDate] = useState<Timestamp | null>(
     props.task?.scheduleDate || null,

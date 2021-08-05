@@ -1,37 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import type { Task as TaskModel } from './Model';
+
 import CalendarIcon from './svg/calendar';
 import MoreIcon from './svg/more-horizontal-f';
 import CircleUncheckedIcon from './svg/circle';
 import CircleCheckedIcon from './svg/chevron-circle-down-f';
 import CircleWillBeCheckedIcon from './svg/chevron-circle-down';
-import type { Timestamp } from 'firebase/firestore';
 
 type TaskProps = {
-  done: boolean;
-  name: string;
-  schedule: Timestamp | null;
+  task: TaskModel;
   onCenterClick: () => void;
   onMenuClick: () => void;
   showControl: boolean;
 };
 
 const Task: React.FC<TaskProps> = (props) => {
+  const task = props.task;
+
   return (
     <DivTask showControl={props.showControl}>
       <DivDone>
-        {props.done ? <CircleCheckedIcon /> : <CircleUncheckedIcon />}
+        {task.done ? <CircleCheckedIcon /> : <CircleUncheckedIcon />}
       </DivDone>
       <DivCenter onClick={props.onCenterClick}>
-        <DivName>{props.name}</DivName>
+        <DivName>{task.name}</DivName>
         <DivSubline>
-          {props.schedule && (
+          {task.scheduleDate && (
             <DivSchedule>
               <CalendarIcon />
-              {`${props.schedule.toDate().getMonth() + 1}月${props.schedule
-                .toDate()
-                .getDate()}日`}
+              {`${
+                task.scheduleDate.toDate().getMonth() + 1
+              }月${task.scheduleDate.toDate().getDate()}日`}
             </DivSchedule>
           )}
         </DivSubline>

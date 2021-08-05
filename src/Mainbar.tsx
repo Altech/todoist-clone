@@ -5,13 +5,12 @@ import {
   CollectionReference,
   deleteDoc,
   doc,
-  getFirestore,
-  onSnapshot,
 } from 'firebase/firestore';
 
 import type { Task as TaskModel, TaskGroup } from './Model';
 import { UserContext } from './context/user-context';
 import { FirestoreContext } from './context/firestore-context';
+import useTasks from './hooks/useTasks';
 import Task from './Task';
 import EditTask from './EditTask';
 import AddTask from './AddTask';
@@ -24,9 +23,19 @@ type Props = {
 };
 
 const Mainbar: React.FC<Props> = (props) => {
-  const user = useContext(UserContext);
   const db = useContext(FirestoreContext);
-  const [tasks, setTasks] = useState<Array<TaskModel>>([]);
+  const user = useContext(UserContext);
+
+  const collectionPath =
+    props.taskGroup.__type === 'project'
+      ? `users/${user!.uid}/projects/${props.taskGroup.id}/tasks`
+      : `users/${user!.uid}/tasks`;
+  const title =
+    props.taskGroup.__type === 'project'
+      ? props.taskGroup.name
+      : 'インボックス';
+
+  const tasks = useTasks(collectionPath);
   const [tasksEditing, setTasksEditing] = useState<{
     [key: string]: boolean | undefined;
   }>({});
@@ -40,35 +49,6 @@ const Mainbar: React.FC<Props> = (props) => {
     nextState[taskId] = value;
     setTasksEditing(nextState);
   };
-
-  const collectionPath =
-    props.taskGroup.__type === 'project'
-      ? `users/${user!.uid}/projects/${props.taskGroup.id}/tasks`
-      : `users/${user!.uid}/tasks`;
-  const title =
-    props.taskGroup.__type === 'project'
-      ? props.taskGroup.name
-      : 'インボックス';
-
-  useEffect(() => {
-    const tasksRef = collection(
-      db,
-      collectionPath,
-    ) as CollectionReference<TaskModel>;
-    const unsubscribe = onSnapshot(tasksRef, {
-      next: (snapshot) => {
-        const newTasks: Array<TaskModel> = [];
-        snapshot.forEach((obj) => {
-          const task = obj.data();
-          task.id = obj.id;
-          task.__type = 'task';
-          newTasks.push(task);
-        });
-        setTasks(newTasks);
-      },
-    });
-    return unsubscribe;
-  }, [collectionPath]);
 
   const deleteTask = (task: TaskModel) => {
     const taskCollection = collection(
@@ -100,9 +80,7 @@ const Mainbar: React.FC<Props> = (props) => {
               <div style={{ position: 'relative' }}>
                 <Task
                   key={task.id}
-                  done={task.done}
-                  name={task.name}
-                  schedule={task.scheduleDate}
+                  task={task}
                   onCenterClick={() => setTaskEditing(task.id, true)}
                   onMenuClick={() => setDropDownTask(task.id)}
                   showControl={dropDownTask === task.id}
