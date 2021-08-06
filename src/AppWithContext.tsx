@@ -16,7 +16,7 @@ const AppWithContext: React.FC = () => {
   const [focusedTaskGroup, setFocusedTaskGroup] = useState<TaskGroup>(Inbox);
 
   return (
-    <div>
+    <DivAppWithContext>
       {(statusBarShown || !user) && <SignInStatusBar />}
       <Header
         onClickMenuHandler={() => setSidebarExpanded((prev) => !prev)}
@@ -28,9 +28,13 @@ const AppWithContext: React.FC = () => {
           <Mainbar taskGroup={focusedTaskGroup} />
         </DivBars>
       )}
-    </div>
+    </DivAppWithContext>
   );
 };
+
+const DivAppWithContext = styled.div`
+  height: 100%;
+`;
 
 const DivBars = styled.div`
   display: flex;
