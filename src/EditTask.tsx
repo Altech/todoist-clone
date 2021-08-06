@@ -29,8 +29,8 @@ function formatDate(date: Date): string {
 const EditTask: React.FC<Props> = (props) => {
   const db = useContext(FirestoreContext);
   const [name, setName] = useState<string>(props.task?.name || '');
-  const [scheduleDate, setScheduleDate] = useState<Timestamp | null>(
-    props.task?.scheduleDate || null,
+  const [scheduledAt, setscheduledAt] = useState<Timestamp | null>(
+    props.task?.scheduledAt || null,
   );
 
   const canSubmit = name.length > 0;
@@ -45,7 +45,7 @@ const EditTask: React.FC<Props> = (props) => {
       __type: 'task',
       done: false,
       name: name,
-      scheduleDate: scheduleDate,
+      scheduledAt: scheduledAt,
       createdAt: Timestamp.fromDate(new Date()),
     };
     if (props.task) {
@@ -73,9 +73,9 @@ const EditTask: React.FC<Props> = (props) => {
           <DivSettings>
             <InputSchedule
               type="date"
-              value={scheduleDate ? formatDate(scheduleDate.toDate()) : ''}
+              value={scheduledAt ? formatDate(scheduledAt.toDate()) : ''}
               onChange={(e) =>
-                setScheduleDate(
+                setscheduledAt(
                   e.target.value.length > 0
                     ? Timestamp.fromDate(new Date(e.target.value))
                     : null,

@@ -40,7 +40,7 @@ export type Task = {
   createdAt?: Timestamp;
   done: boolean;
   name: string;
-  scheduleDate: Timestamp | null;
+  scheduledAt: Timestamp | null;
 };
 
 export type Project = {

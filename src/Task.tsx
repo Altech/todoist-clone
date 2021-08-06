@@ -27,12 +27,12 @@ const Task: React.FC<TaskProps> = (props) => {
       <DivCenter onClick={props.onCenterClick}>
         <DivName>{task.name}</DivName>
         <DivSubline>
-          {task.scheduleDate && (
+          {task.scheduledAt && (
             <DivSchedule>
               <CalendarIcon />
-              {`${
-                task.scheduleDate.toDate().getMonth() + 1
-              }月${task.scheduleDate.toDate().getDate()}日`}
+              {`${task.scheduledAt.toDate().getMonth() + 1}月${task.scheduledAt
+                .toDate()
+                .getDate()}日`}
             </DivSchedule>
           )}
         </DivSubline>
