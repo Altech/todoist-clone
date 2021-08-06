@@ -37,18 +37,18 @@ type ID = string;
 export type Task = {
   __type: 'task';
   id?: string;
+  createdAt?: Timestamp;
   done: boolean;
   name: string;
   scheduleDate: Timestamp | null;
-  // parentTaskId?: ID; // 階層的に構築できる(機能実装はしないかも) ... こういう場合どうするんだろ？
-  // projectId: ID; // Firestore の設計によってはパスに入るかもしれない
 };
 
 export type Project = {
   __type: 'project';
   id?: string;
+  createdAt?: Timestamp;
   name: string;
-  color?: string;
+  color: string | null;
 };
 
 export type InboxType = { __type: 'inbox' };

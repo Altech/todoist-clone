@@ -46,6 +46,7 @@ const EditTask: React.FC<Props> = (props) => {
       done: false,
       name: name,
       scheduleDate: scheduleDate,
+      createdAt: Timestamp.fromDate(new Date()),
     };
     if (props.task) {
       const docRef = doc(taskCollection, props.task.id);
