@@ -3,6 +3,8 @@ import {
   collection,
   CollectionReference,
   onSnapshot,
+  orderBy,
+  query,
 } from 'firebase/firestore';
 
 import type { Task as TaskModel } from '../Model';
@@ -13,11 +15,12 @@ const useTasks = (collectionPath: string) => {
   const [tasks, setTasks] = useState<Array<TaskModel>>([]);
 
   useEffect(() => {
-    const tasksRef = collection(
+    const tasksCollection = collection(
       db,
       collectionPath,
     ) as CollectionReference<TaskModel>;
-    const unsubscribe = onSnapshot(tasksRef, {
+    const q = query(tasksCollection, orderBy('createdAt'));
+    const unsubscribe = onSnapshot(q, {
       next: (snapshot) => {
         const newTasks: Array<TaskModel> = [];
         snapshot.forEach((obj) => {

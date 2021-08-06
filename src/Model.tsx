@@ -31,8 +31,6 @@
 
 import type { Timestamp } from 'firebase/firestore';
 
-type ID = string;
-
 // UI上、1行として表示されるものに一致する
 export type Task = {
   __type: 'task';

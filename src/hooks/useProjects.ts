@@ -19,11 +19,11 @@ const useProjects = (): ProjectModel[] => {
       setProjects([]);
       return;
     }
-    const projectsRef = collection(
+    const projectsCollection = collection(
       db,
       `users/${user!.uid}/projects`,
     ) as CollectionReference<ProjectModel>;
-    const unsubscribe = onSnapshot(projectsRef, {
+    const unsubscribe = onSnapshot(projectsCollection, {
       next: (snapshot) => {
         const newProjects: ProjectModel[] = [];
         snapshot.forEach((obj) => {
