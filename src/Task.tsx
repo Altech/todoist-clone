@@ -11,6 +11,7 @@ import CircleWillBeCheckedIcon from './svg/chevron-circle-down';
 
 type TaskProps = {
   task: TaskModel;
+  onCheckMarkClick: () => void;
   onCenterClick: () => void;
   onMenuClick: () => void;
   showControl: boolean;
@@ -21,8 +22,15 @@ const Task: React.FC<TaskProps> = (props) => {
 
   return (
     <DivTask showControl={props.showControl}>
-      <DivDone>
-        {task.done ? <CircleCheckedIcon /> : <CircleUncheckedIcon />}
+      <DivDone onClick={props.onCheckMarkClick}>
+        {task.done ? (
+          <CircleCheckedIcon className="checked" />
+        ) : (
+          <div>
+            <CircleUncheckedIcon className="unchecked" />
+            <CircleWillBeCheckedIcon className="willbechecked" />
+          </div>
+        )}
       </DivDone>
       <DivCenter onClick={props.onCenterClick}>
         <DivName>{task.name}</DivName>
@@ -65,6 +73,21 @@ const DivDone = styled.div`
     margin-top: 1px;
     width: 20px;
     height: 20px;
+  }
+  svg.unchecked {
+    display: inline;
+  }
+  svg.willbechecked {
+    display: none;
+  }
+  &:hover {
+    cursor: pointer;
+    svg.unchecked {
+      display: none;
+    }
+    svg.willbechecked {
+      display: inline;
+    }
   }
 `;
 

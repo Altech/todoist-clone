@@ -5,6 +5,7 @@ import {
   CollectionReference,
   deleteDoc,
   doc,
+  setDoc,
 } from 'firebase/firestore';
 
 import type { Task as TaskModel, TaskGroup } from './Model';
@@ -50,6 +51,16 @@ const Mainbar: React.FC<Props> = (props) => {
     setTasksEditing(nextState);
   };
 
+  const doneTask = (task: TaskModel) => {
+    const taskCollection = collection(
+      db,
+      collectionPath,
+    ) as CollectionReference<TaskModel>;
+    const newTask = Object.assign({}, task);
+    newTask.done = true;
+    setDoc(doc(taskCollection, task.id), newTask);
+  };
+
   const deleteTask = (task: TaskModel) => {
     const taskCollection = collection(
       db,
@@ -81,6 +92,7 @@ const Mainbar: React.FC<Props> = (props) => {
                 <Task
                   key={task.id}
                   task={task}
+                  onCheckMarkClick={() => doneTask(task)}
                   onCenterClick={() => setTaskEditing(task.id, true)}
                   onMenuClick={() => setDropDownTask(task.id)}
                   showControl={dropDownTask === task.id}
