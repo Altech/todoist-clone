@@ -5,6 +5,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  where,
 } from 'firebase/firestore';
 
 import type { Task as TaskModel } from '../Model';
@@ -19,7 +20,11 @@ const useTasks = (collectionPath: string) => {
       db,
       collectionPath,
     ) as CollectionReference<TaskModel>;
-    const q = query(tasksCollection, orderBy('createdAt'));
+    const q = query(
+      tasksCollection,
+      where('done', '==', false),
+      orderBy('createdAt'),
+    );
     const unsubscribe = onSnapshot(q, {
       next: (snapshot) => {
         const newTasks: Array<TaskModel> = [];
