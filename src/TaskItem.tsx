@@ -8,7 +8,7 @@ import {
 } from 'firebase/firestore';
 
 import { FirestoreContext } from './context/firestore';
-import { getCollectionPath } from './hooks/getCollectionPath';
+import { useCollectionPath } from './hooks/useCollectionPath';
 import type { Task, TaskGroup } from './Model';
 import { TaskItemView } from './TaskItemView';
 import { TaskItemForm } from './TaskItemForm';
@@ -26,7 +26,7 @@ export const TaskItem: React.FC<Props> = (props) => {
   const db = useContext(FirestoreContext);
   const [mode, setMode] = useState<Mode>(props.task ? 'View' : 'Placeholder');
 
-  const collectionPath = getCollectionPath(props.taskGroup);
+  const collectionPath = useCollectionPath(props.taskGroup);
 
   const doneTask = (task: Task) => {
     const taskCollection = collection(

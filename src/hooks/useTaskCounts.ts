@@ -11,7 +11,7 @@ import {
 import { Inbox, Task } from '../Model';
 import { FirestoreContext } from '../context/firestore';
 import { ProjectsContext } from '../context/projects';
-import { getCollectionPathWithoutContext } from '../hooks/getCollectionPath';
+import { getCollectionPath } from '../utils';
 import { UserContext } from '../context/user';
 
 export const useTaskCounts = () => {
@@ -21,14 +21,12 @@ export const useTaskCounts = () => {
   const [taskCounts, setTaskCounts] = useState<{ [key: string]: number }>({});
 
   const allTaskGroups = [Inbox, ...projects];
-  const paths = allTaskGroups.map((g) =>
-    getCollectionPathWithoutContext(g, user!),
-  );
+  const paths = allTaskGroups.map((g) => getCollectionPath(g, user!));
 
   useEffect(() => {
     const unsbuscribes: Unsubscribe[] = [];
     allTaskGroups.forEach((taskGroup) => {
-      const path = getCollectionPathWithoutContext(taskGroup, user!);
+      const path = getCollectionPath(taskGroup, user!);
       const tasksCollection = collection(db, path) as CollectionReference<Task>;
       const q = query(tasksCollection, where('done', '==', false));
       const unsubscribe = onSnapshot(q, {

@@ -11,7 +11,6 @@ import CalendarAltIcon from './svg/calendar-alt';
 import ChevronDownIcon from './svg/chevron-down';
 import CircleFilledIcon from './svg/circle-f';
 import { useTaskCounts } from './hooks/useTaskCounts';
-import { getCollectionPath } from './hooks/getCollectionPath';
 
 const colors: string[] = [
   '#9FC2E7',

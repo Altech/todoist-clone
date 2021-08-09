@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import type { TaskGroup } from './Model';
 import { useTasks } from './hooks/useTasks';
-import { getCollectionPath } from './hooks/getCollectionPath';
+import { useCollectionPath } from './hooks/useCollectionPath';
 import { TaskItem } from './TaskItem';
 
 import MoreHorizontalIcon from './svg/more-horizontal';
@@ -17,7 +17,7 @@ export const Mainbar: React.FC<Props> = (props) => {
     props.taskGroup.__type === 'project'
       ? props.taskGroup.name
       : 'インボックス';
-  const tasks = useTasks(getCollectionPath(props.taskGroup));
+  const tasks = useTasks(useCollectionPath(props.taskGroup));
 
   return (
     <DivContainer>
