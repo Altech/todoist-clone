@@ -82,13 +82,14 @@ const Mainbar: React.FC<Props> = (props) => {
           {tasks.map((task) =>
             tasksEditing[task.id as string] ? (
               <EditTask
-                collectionPath={collectionPath}
+                key={task.id}
                 task={task}
+                collectionPath={collectionPath}
                 onCancelClick={() => setTaskEditing(task.id, false)}
                 onComplete={() => setTaskEditing(task.id, false)}
               />
             ) : (
-              <div style={{ position: 'relative' }}>
+              <div key={task.id} style={{ position: 'relative' }}>
                 <Task
                   key={task.id}
                   task={task}
@@ -99,6 +100,7 @@ const Mainbar: React.FC<Props> = (props) => {
                 />
                 {dropDownTask === task.id && (
                   <TaskDropDown
+                    key={task.id + '#dowpdown'}
                     onEditClick={() => setTaskEditing(task.id, true)}
                     onDeleteClick={() => deleteTask(task)}
                   />
@@ -108,12 +110,13 @@ const Mainbar: React.FC<Props> = (props) => {
           )}
           {newTaskEditing ? (
             <EditTask
+              key="newTask"
               collectionPath={collectionPath}
               onCancelClick={() => setNewTaskEditing(false)}
               onComplete={() => setNewTaskEditing(false)}
             />
           ) : (
-            <div onClick={() => setNewTaskEditing(true)}>
+            <div key="newTask" onClick={() => setNewTaskEditing(true)}>
               <AddTask />
             </div>
           )}
