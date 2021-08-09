@@ -72,7 +72,7 @@ const DivSidebar = styled.div`
   padding-left: 35px;
 `;
 
-const DivItem = styled.div<{ iconColor?: string; iconIsSmall?: boolean }>`
+const DivItem = styled.div<{ iconColor: string | null; iconIsSmall?: boolean }>`
   height: 34px;
   padding: 5px;
   padding-right: 18px;

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { UserContext } from '../context/user-context';
-import { TaskGroup } from '../Model';
+import type { TaskGroup } from '../Model';
 
 const getCollectionPath = (taskGroup: TaskGroup) => {
   const user = useContext(UserContext);
