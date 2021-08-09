@@ -49,6 +49,6 @@ export type Project = {
   color: string | null;
 };
 
-export type InboxType = { __type: 'inbox' };
+export type InboxType = { __type: 'inbox'; name: '__inbox__' };
 export type TaskGroup = Project | InboxType;
-export const Inbox: InboxType = { __type: 'inbox' };
+export const Inbox: InboxType = { __type: 'inbox', name: '__inbox__' };
