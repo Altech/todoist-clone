@@ -1,5 +1,5 @@
 import React from 'react';
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import type { User } from 'firebase/auth';
 
 import useAuthState from '../hooks/useAuthState';
