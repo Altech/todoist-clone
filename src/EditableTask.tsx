@@ -53,8 +53,8 @@ const EditableTask: React.FC<Props> = (props) => {
       <EditTask
         task={props.task}
         collectionPath={collectionPath}
-        onCancelClick={() => setMode('Placeholder')}
-        onComplete={() => setMode('Placeholder')}
+        onCancelClick={() => setMode(props.task ? 'View' : 'Placeholder')}
+        onComplete={() => setMode(props.task ? 'View' : 'Placeholder')}
       />
     );
   } else if (mode === 'Placeholder') {
