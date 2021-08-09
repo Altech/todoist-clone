@@ -10,7 +10,7 @@ import {
 import { FirestoreContext } from './context/firestore-context';
 import getCollectionPath from './hooks/getCollectionPath';
 import type { Task, TaskGroup } from './Model';
-import { default as TaskView } from './Task';
+import TaskView from './TaskView';
 import EditTask from './EditTask';
 import AddTask from './AddTask';
 import TaskDropDown from './TaskDropDown';
