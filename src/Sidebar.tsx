@@ -20,6 +20,7 @@ const colors: string[] = [
 ];
 
 type Props = {
+  current: TaskGroup;
   switcher: (arg: TaskGroup) => void;
 };
 
@@ -28,38 +29,48 @@ export const Sidebar: React.FC<Props> = (props) => {
 
   return (
     <DivContainer>
-      <div>
-        <DivItem iconColor="#246fe0" onClick={() => props.switcher(Inbox)}>
-          <InboxIcon />
-          インボックス
-          <span>{12}</span>
-        </DivItem>
-        <DivItem iconColor="#058527">
-          <CalendarIcon /> 今日
-          <span>{2}</span>
-        </DivItem>
-        <DivItem iconColor="#692fc2">
-          <CalendarAltIcon />
-          近日予定
-        </DivItem>
-      </div>
-      <div>
-        <DivProjectsHeader>
-          <ChevronDownIcon />
-          プロジェクト
-        </DivProjectsHeader>
-        {projects.map((project) => (
+      <div style={{ marginRight: '4px' }}>
+        <div>
           <DivItem
-            key={project.name}
-            iconColor={project.color}
-            iconIsSmall={true}
-            onClick={() => props.switcher(project)}
+            iconColor="#246fe0"
+            onClick={() => props.switcher(Inbox)}
+            focus={props.current === Inbox}
           >
-            <CircleFilledIcon />
-            {project.name}
+            <InboxIcon />
+            インボックス
             <span>{12}</span>
           </DivItem>
-        ))}
+          <DivItem iconColor="#058527" focus={false}>
+            <CalendarIcon /> 今日
+            <span>{2}</span>
+          </DivItem>
+          <DivItem iconColor="#692fc2" focus={false}>
+            <CalendarAltIcon />
+            近日予定
+          </DivItem>
+        </div>
+        <div>
+          <DivProjectsHeader>
+            <ChevronDownIcon />
+            プロジェクト
+          </DivProjectsHeader>
+          {projects.map((project) => (
+            <DivItem
+              key={project.name}
+              iconColor={project.color}
+              iconIsSmall={true}
+              focus={
+                props.current.__type === 'project' &&
+                props.current.name === project.name
+              }
+              onClick={() => props.switcher(project)}
+            >
+              <CircleFilledIcon />
+              {project.name}
+              <span>{12}</span>
+            </DivItem>
+          ))}
+        </div>
       </div>
     </DivContainer>
   );
@@ -72,12 +83,18 @@ const DivContainer = styled.div`
   padding-left: 35px;
 `;
 
-const DivItem = styled.div<{ iconColor: string | null; iconIsSmall?: boolean }>`
+const DivItem = styled.div<{
+  iconColor: string | null;
+  iconIsSmall?: boolean;
+  focus: boolean;
+}>`
   height: 34px;
   padding: 5px;
   padding-right: 18px;
   font-size: 14px;
   color: #202020;
+  border-radius: 5px;
+  background: ${(props) => (props.focus ? '#e9e9e9' : 'none')};
 
   box-sizing: border-box;
 

@@ -24,7 +24,12 @@ export const AppWithContext: React.FC = () => {
       />
       {user && (
         <DivBars>
-          {sidebarExpanded && <Sidebar switcher={setFocusedTaskGroup} />}
+          {sidebarExpanded && (
+            <Sidebar
+              current={focusedTaskGroup}
+              switcher={setFocusedTaskGroup}
+            />
+          )}
           <Mainbar taskGroup={focusedTaskGroup} />
         </DivBars>
       )}
