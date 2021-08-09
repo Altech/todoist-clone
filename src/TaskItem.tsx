@@ -10,9 +10,9 @@ import {
 import { FirestoreContext } from './context/firestore-context';
 import getCollectionPath from './hooks/getCollectionPath';
 import type { Task, TaskGroup } from './Model';
-import TaskView from './TaskView';
-import EditTask from './EditTask';
-import AddTask from './AddTask';
+import TaskItemView from './TaskItemView';
+import TaskItemForm from './TaskItemForm';
+import TaskItemPlaceholder from './TaskItemPlaceholder';
 import TaskDropDown from './TaskDropDown';
 
 type Props = {
@@ -50,7 +50,7 @@ const EditableTask: React.FC<Props> = (props) => {
 
   if (mode === 'Form') {
     return (
-      <EditTask
+      <TaskItemForm
         task={props.task}
         collectionPath={collectionPath}
         onCancelClick={() => setMode(props.task ? 'View' : 'Placeholder')}
@@ -60,14 +60,14 @@ const EditableTask: React.FC<Props> = (props) => {
   } else if (mode === 'Placeholder') {
     return (
       <div onClick={() => setMode('Form')}>
-        <AddTask />
+        <TaskItemPlaceholder />
       </div>
     );
   } else if (mode === 'View') {
     const task = props.task as Task;
     return (
       <div style={{ position: 'relative' }}>
-        <TaskView
+        <TaskItemView
           key="view"
           task={props.task as Task}
           onCheckMarkClick={() => doneTask(task)}

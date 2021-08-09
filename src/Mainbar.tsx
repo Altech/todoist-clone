@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import type { TaskGroup } from './Model';
 import useTasks from './hooks/useTasks';
 import getCollectionPath from './hooks/getCollectionPath';
-import EditableTask from './EditableTask';
+import TaskItem from './TaskItem';
 
 import MoreHorizontalIcon from './svg/more-horizontal';
 
@@ -30,13 +30,9 @@ const Mainbar: React.FC<Props> = (props) => {
         </DivHeader>
         <DivContent>
           {tasks.map((task) => (
-            <EditableTask
-              key={task.id}
-              taskGroup={props.taskGroup}
-              task={task}
-            />
+            <TaskItem key={task.id} taskGroup={props.taskGroup} task={task} />
           ))}
-          <EditableTask taskGroup={props.taskGroup} />
+          <TaskItem taskGroup={props.taskGroup} />
         </DivContent>
       </DivInnerContainer>
     </DivMainBar>
