@@ -7,13 +7,13 @@ import {
   setDoc,
 } from 'firebase/firestore';
 
-import { UserContext } from './context/user-context';
+import { FirestoreContext } from './context/firestore-context';
+import getCollectionPath from './hooks/getCollectionPath';
 import type { Task, TaskGroup } from './Model';
 import { default as TaskView } from './Task';
 import EditTask from './EditTask';
 import AddTask from './AddTask';
 import TaskDropDown from './TaskDropDown';
-import { FirestoreContext } from './context/firestore-context';
 
 type Props = {
   taskGroup: TaskGroup;
@@ -24,15 +24,11 @@ type Mode = 'Placeholder' | 'View' | 'Form';
 
 // タスクの追加・表示・編集の三つのモードを請け負う。
 const EditableTask: React.FC<Props> = (props) => {
-  const user = useContext(UserContext);
   const db = useContext(FirestoreContext);
   const [mode, setMode] = useState<Mode>(props.task ? 'View' : 'Placeholder');
   const [dropdown, setDropdown] = useState<boolean>(false);
 
-  const collectionPath =
-    props.taskGroup.__type === 'project'
-      ? `users/${user!.uid}/projects/${props.taskGroup.id}/tasks`
-      : `users/${user!.uid}/tasks`;
+  const collectionPath = getCollectionPath(props.taskGroup);
 
   const doneTask = (task: Task) => {
     const taskCollection = collection(

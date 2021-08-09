@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import type { TaskGroup } from './Model';
-import { UserContext } from './context/user-context';
 import useTasks from './hooks/useTasks';
+import getCollectionPath from './hooks/getCollectionPath';
 import EditableTask from './EditableTask';
 
 import MoreHorizontalIcon from './svg/more-horizontal';
@@ -13,16 +13,11 @@ type Props = {
 };
 
 const Mainbar: React.FC<Props> = (props) => {
-  const user = useContext(UserContext);
-  const collectionPath =
-    props.taskGroup.__type === 'project'
-      ? `users/${user!.uid}/projects/${props.taskGroup.id}/tasks`
-      : `users/${user!.uid}/tasks`;
   const title =
     props.taskGroup.__type === 'project'
       ? props.taskGroup.name
       : 'インボックス';
-  const tasks = useTasks(collectionPath);
+  const tasks = useTasks(getCollectionPath(props.taskGroup));
 
   return (
     <DivMainBar>
