@@ -7,12 +7,12 @@ import {
 
 import { UserContext } from '../context/user-context';
 import { FirestoreContext } from '../context/firestore-context';
-import type { Project as ProjectModel } from '../Model';
+import type { Project } from '../Model';
 
-const useProjects = (): ProjectModel[] => {
+const useProjects = (): Project[] => {
   const user = useContext(UserContext);
   const db = useContext(FirestoreContext);
-  const [projects, setProjects] = useState<ProjectModel[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
     if (!user) {
@@ -22,10 +22,10 @@ const useProjects = (): ProjectModel[] => {
     const projectsCollection = collection(
       db,
       `users/${user!.uid}/projects`,
-    ) as CollectionReference<ProjectModel>;
+    ) as CollectionReference<Project>;
     const unsubscribe = onSnapshot(projectsCollection, {
       next: (snapshot) => {
-        const newProjects: ProjectModel[] = [];
+        const newProjects: Project[] = [];
         snapshot.forEach((obj) => {
           const project = obj.data();
           project.id = obj.id;

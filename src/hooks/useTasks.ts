@@ -8,18 +8,18 @@ import {
   where,
 } from 'firebase/firestore';
 
-import type { Task as TaskModel } from '../Model';
+import type { Task } from '../Model';
 import { FirestoreContext } from '../context/firestore-context';
 
 const useTasks = (collectionPath: string) => {
   const db = useContext(FirestoreContext);
-  const [tasks, setTasks] = useState<Array<TaskModel>>([]);
+  const [tasks, setTasks] = useState<Array<Task>>([]);
 
   useEffect(() => {
     const tasksCollection = collection(
       db,
       collectionPath,
-    ) as CollectionReference<TaskModel>;
+    ) as CollectionReference<Task>;
     const q = query(
       tasksCollection,
       where('done', '==', false),
@@ -27,7 +27,7 @@ const useTasks = (collectionPath: string) => {
     );
     const unsubscribe = onSnapshot(q, {
       next: (snapshot) => {
-        const newTasks: Array<TaskModel> = [];
+        const newTasks: Array<Task> = [];
         snapshot.forEach((obj) => {
           const task = obj.data();
           task.id = obj.id;

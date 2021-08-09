@@ -9,12 +9,12 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 
-import type { Task as TaskModel } from './Model';
+import type { Task } from './Model';
 import { FirestoreContext } from './context/firestore-context';
 
 type Props = {
   collectionPath: string;
-  task?: TaskModel;
+  task?: Task;
   onCancelClick: () => void;
   onComplete: () => void;
 };
@@ -40,8 +40,8 @@ const TaskItemForm: React.FC<Props> = (props) => {
     const taskCollection = collection(
       db,
       props.collectionPath,
-    ) as CollectionReference<TaskModel>;
-    const docData: TaskModel = {
+    ) as CollectionReference<Task>;
+    const docData: Task = {
       __type: 'task',
       done: false,
       name: name,
@@ -54,7 +54,7 @@ const TaskItemForm: React.FC<Props> = (props) => {
         .then((_docRef) => props.onComplete())
         .catch((e) => console.log(e));
     } else {
-      addDoc<TaskModel>(taskCollection, docData)
+      addDoc<Task>(taskCollection, docData)
         .then((_docRef) => props.onComplete())
         .catch((e) => console.log(e));
     }

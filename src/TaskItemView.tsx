@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import type { Task as TaskModel } from './Model';
+import type { Task } from './Model';
 import TaskDropDown from './TaskDropDown';
 
 import CalendarIcon from './svg/calendar';
@@ -11,7 +11,7 @@ import CircleCheckedIcon from './svg/chevron-circle-down-f';
 import CircleWillBeCheckedIcon from './svg/chevron-circle-down';
 
 type Props = {
-  task: TaskModel;
+  task: Task;
   onCheckMarkClick: () => void;
   onCenterClick: () => void;
   onMenuEditClick: () => void;
