@@ -7,12 +7,12 @@ import {
   setDoc,
 } from 'firebase/firestore';
 
-import { FirestoreContext } from './context/firestore-context';
-import getCollectionPath from './hooks/getCollectionPath';
+import { FirestoreContext } from './context/firestore';
+import { getCollectionPath } from './hooks/getCollectionPath';
 import type { Task, TaskGroup } from './Model';
-import TaskItemView from './TaskItemView';
-import TaskItemForm from './TaskItemForm';
-import TaskItemPlaceholder from './TaskItemPlaceholder';
+import { TaskItemView } from './TaskItemView';
+import { TaskItemForm } from './TaskItemForm';
+import { TaskItemPlaceholder } from './TaskItemPlaceholder';
 
 type Props = {
   taskGroup: TaskGroup;
@@ -22,7 +22,7 @@ type Props = {
 type Mode = 'Placeholder' | 'View' | 'Form';
 
 // タスクの追加・表示・編集の三つのモードを請け負う。
-const TaskItem: React.FC<Props> = (props) => {
+export const TaskItem: React.FC<Props> = (props) => {
   const db = useContext(FirestoreContext);
   const [mode, setMode] = useState<Mode>(props.task ? 'View' : 'Placeholder');
 

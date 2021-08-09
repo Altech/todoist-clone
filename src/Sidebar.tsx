@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import type { TaskGroup } from './Model';
 import { Inbox } from './Model';
-import { ProjectsContext } from './context/projects-context';
+import { ProjectsContext } from './context/projects';
 
 import InboxIcon from './svg/inbox';
 import CalendarIcon from './svg/calendar';
@@ -23,11 +23,11 @@ type Props = {
   switcher: (arg: TaskGroup) => void;
 };
 
-const Sidebar: React.FC<Props> = (props) => {
+export const Sidebar: React.FC<Props> = (props) => {
   const projects = useContext(ProjectsContext);
 
   return (
-    <DivSidebar>
+    <DivContainer>
       <div>
         <DivItem iconColor="#246fe0" onClick={() => props.switcher(Inbox)}>
           <InboxIcon />
@@ -61,11 +61,11 @@ const Sidebar: React.FC<Props> = (props) => {
           </DivItem>
         ))}
       </div>
-    </DivSidebar>
+    </DivContainer>
   );
 };
 
-const DivSidebar = styled.div`
+const DivContainer = styled.div`
   background: #fbfafa;
   width: 304px;
   padding-top: 30px;
@@ -121,5 +121,3 @@ const DivProjectsHeader = styled.div`
     fill: rgba(0, 0, 0, 0.44);
   }
 `;
-
-export default Sidebar;

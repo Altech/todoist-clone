@@ -9,9 +9,9 @@ import {
 } from 'firebase/firestore';
 
 import type { Task } from '../Model';
-import { FirestoreContext } from '../context/firestore-context';
+import { FirestoreContext } from '../context/firestore';
 
-const useTasks = (collectionPath: string) => {
+export const useTasks = (collectionPath: string) => {
   const db = useContext(FirestoreContext);
   const [tasks, setTasks] = useState<Array<Task>>([]);
 
@@ -42,5 +42,3 @@ const useTasks = (collectionPath: string) => {
 
   return tasks;
 };
-
-export default useTasks;

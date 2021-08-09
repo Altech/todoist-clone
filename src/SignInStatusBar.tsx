@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import { firebaseAuth } from './firebase';
-import { UserContext } from './context/user-context';
+import { UserContext } from './context/user';
 
-const SignInStatusBar = () => {
+export const SignInStatusBar = () => {
   const user = useContext(UserContext);
   // states for sign in
   const [email, setEmail] = useState<string>('');
@@ -29,7 +29,7 @@ const SignInStatusBar = () => {
 
   if (user) {
     return (
-      <DivSignInStatusBar type={'SignIn'}>
+      <DivContainer type={'SignIn'}>
         <div>▷ user ID: {user.uid}</div>
         <button
           onClick={() => {
@@ -39,11 +39,11 @@ const SignInStatusBar = () => {
         >
           Sign Out
         </button>
-      </DivSignInStatusBar>
+      </DivContainer>
     );
   } else {
     return (
-      <DivSignInStatusBar type={'SignUp'}>
+      <DivContainer type={'SignUp'}>
         {
           <div>
             <span onClick={() => setExpand((prev) => !prev)}>
@@ -78,12 +78,12 @@ const SignInStatusBar = () => {
             (TODO: ui)
           </div>
         )}
-      </DivSignInStatusBar>
+      </DivContainer>
     );
   }
 };
 
-const DivSignInStatusBar = styled.div<{ type: 'SignIn' | 'SignUp' }>`
+const DivContainer = styled.div<{ type: 'SignIn' | 'SignUp' }>`
   position: fixed;
   bottom: 0px;
   left: 0px;
@@ -98,5 +98,3 @@ const DivSignInStatusBar = styled.div<{ type: 'SignIn' | 'SignUp' }>`
     margin-left: ${(props) => (props.type === 'SignIn' ? 'auto' : '0')};
   }
 `;
-
-export default SignInStatusBar;

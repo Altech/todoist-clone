@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore';
 
 import type { Task } from './Model';
-import { FirestoreContext } from './context/firestore-context';
+import { FirestoreContext } from './context/firestore';
 
 type Props = {
   collectionPath: string;
@@ -26,7 +26,7 @@ function formatDate(date: Date): string {
   return `${y}-${m}-${d}`;
 }
 
-const TaskItemForm: React.FC<Props> = (props) => {
+export const TaskItemForm: React.FC<Props> = (props) => {
   const db = useContext(FirestoreContext);
   const [name, setName] = useState<string>(props.task?.name || '');
   const [scheduledAt, setscheduledAt] = useState<Timestamp | null>(
@@ -61,7 +61,7 @@ const TaskItemForm: React.FC<Props> = (props) => {
   };
 
   return (
-    <DivTaskItemForm>
+    <DivContainer>
       <form>
         <DivInputs>
           <InputName
@@ -93,11 +93,11 @@ const TaskItemForm: React.FC<Props> = (props) => {
           </button>
         </DivButtons>
       </form>
-    </DivTaskItemForm>
+    </DivContainer>
   );
 };
 
-const DivTaskItemForm = styled.div`
+const DivContainer = styled.div`
   margin: 4px auto;
 `;
 
@@ -161,5 +161,3 @@ const DivButtons = styled.div`
     margin-left: 12px;
   }
 `;
-
-export default TaskItemForm;

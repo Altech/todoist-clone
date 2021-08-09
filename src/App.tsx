@@ -1,14 +1,14 @@
 import React from 'react';
 
-import AppWithContext from './AppWithContext';
-import { ProjectsProvider } from './context/projects-context';
-import { UserProvider } from './context/user-context';
+import { AppWithContext } from './AppWithContext';
+import { ProjectsProvider } from './context/projects';
+import { UserProvider } from './context/user';
 
 import './App.css';
 
 interface Props {}
 
-function App({}: Props) {
+export function App({}: Props) {
   return (
     <div className="App">
       <UserProvider>
@@ -19,5 +19,3 @@ function App({}: Props) {
     </div>
   );
 }
-
-export default App;

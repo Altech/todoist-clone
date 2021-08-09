@@ -2,7 +2,7 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { firebaseAuth } from '../firebase';
 
-export default (): [User | null, boolean] => {
+export const useAuthState = (): [User | null, boolean] => {
   const [loading, setLoading] = useState<boolean>(true);
   const [user, setUser] = useState<User | null>(null);
 

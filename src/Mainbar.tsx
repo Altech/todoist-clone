@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import type { TaskGroup } from './Model';
-import useTasks from './hooks/useTasks';
-import getCollectionPath from './hooks/getCollectionPath';
-import TaskItem from './TaskItem';
+import { useTasks } from './hooks/useTasks';
+import { getCollectionPath } from './hooks/getCollectionPath';
+import { TaskItem } from './TaskItem';
 
 import MoreHorizontalIcon from './svg/more-horizontal';
 
@@ -12,7 +12,7 @@ type Props = {
   taskGroup: TaskGroup;
 };
 
-const Mainbar: React.FC<Props> = (props) => {
+export const Mainbar: React.FC<Props> = (props) => {
   const title =
     props.taskGroup.__type === 'project'
       ? props.taskGroup.name
@@ -20,7 +20,7 @@ const Mainbar: React.FC<Props> = (props) => {
   const tasks = useTasks(getCollectionPath(props.taskGroup));
 
   return (
-    <DivMainBar>
+    <DivContainer>
       <DivInnerContainer>
         <DivHeader>
           <DivTitle>{title}</DivTitle>
@@ -35,11 +35,11 @@ const Mainbar: React.FC<Props> = (props) => {
           <TaskItem taskGroup={props.taskGroup} />
         </DivContent>
       </DivInnerContainer>
-    </DivMainBar>
+    </DivContainer>
   );
 };
 
-const DivMainBar = styled.div`
+const DivContainer = styled.div`
   background: white;
   width: 100%;
 `;

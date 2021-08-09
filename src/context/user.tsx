@@ -2,7 +2,7 @@ import React from 'react';
 import { createContext } from 'react';
 import type { User } from 'firebase/auth';
 
-import useAuthState from '../hooks/useAuthState';
+import { useAuthState } from '../hooks/useAuthState';
 
 export const UserContext = createContext<User | null>(null);
 

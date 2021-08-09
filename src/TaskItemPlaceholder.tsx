@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import CalendarIcon from './svg/calendar';
 import MoreIcon from './svg/more-horizontal-f';
-
 import PlusIcon from './svg/plus';
 import PlusCircleIcon from './svg/plus-circle-f';
 
@@ -11,9 +10,9 @@ import PlusCircleIcon from './svg/plus-circle-f';
 //-------------------------------------
 type Props = {};
 
-const TaskItemPlaceholder: React.FC<Props> = (props) => {
+export const TaskItemPlaceholder: React.FC<Props> = (props) => {
   return (
-    <DivTaskItemPlaceholder>
+    <DivContainer>
       <DivAdd>
         <div className="state-normal">
           <PlusIcon />
@@ -25,11 +24,11 @@ const TaskItemPlaceholder: React.FC<Props> = (props) => {
       <DivCenter>
         <DivName className="name">タスクを追加</DivName>
       </DivCenter>
-    </DivTaskItemPlaceholder>
+    </DivContainer>
   );
 };
 
-const DivTaskItemPlaceholder = styled.div`
+const DivContainer = styled.div`
   display: flex;
   align-items: center;
 
@@ -85,5 +84,3 @@ const DivSubline = styled.div`
     padding: 2px;
   }
 `;
-
-export default TaskItemPlaceholder;

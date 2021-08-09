@@ -5,11 +5,11 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 
-import { UserContext } from '../context/user-context';
-import { FirestoreContext } from '../context/firestore-context';
+import { UserContext } from '../context/user';
+import { FirestoreContext } from '../context/firestore';
 import type { Project } from '../Model';
 
-const useProjects = (): Project[] => {
+export const useProjects = (): Project[] => {
   const user = useContext(UserContext);
   const db = useContext(FirestoreContext);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -40,5 +40,3 @@ const useProjects = (): Project[] => {
 
   return projects;
 };
-
-export default useProjects;

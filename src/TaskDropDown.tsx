@@ -9,9 +9,9 @@ type Props = {
   onDeleteClick: () => void;
 };
 
-const TaskDropDown: React.FC<Props> = (props) => {
+export const TaskDropDown: React.FC<Props> = (props) => {
   return (
-    <DivTaskDropDown>
+    <DivContainer>
       <ul>
         <li onClick={props.onEditClick}>
           <PencilIcon />
@@ -22,11 +22,11 @@ const TaskDropDown: React.FC<Props> = (props) => {
           タスクを削除
         </li>
       </ul>
-    </DivTaskDropDown>
+    </DivContainer>
   );
 };
 
-const DivTaskDropDown = styled.div`
+const DivContainer = styled.div`
   position: absolute;
   top: 26px;
   right: 8px;
@@ -66,5 +66,3 @@ const DivTaskDropDown = styled.div`
     }
   }
 `;
-
-export default TaskDropDown;

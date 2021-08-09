@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import type { Task } from './Model';
-import TaskDropDown from './TaskDropDown';
+import { TaskDropDown } from './TaskDropDown';
 
 import CalendarIcon from './svg/calendar';
 import MoreIcon from './svg/more-horizontal-f';
@@ -18,12 +18,12 @@ type Props = {
   onMenuDeleteClick: () => void;
 };
 
-const TaskItemView: React.FC<Props> = (props) => {
+export const TaskItemView: React.FC<Props> = (props) => {
   const task = props.task;
   const [dropdown, setDropdown] = useState<boolean>(false);
 
   return (
-    <DivTaskItemView>
+    <DivContainer>
       <DivTask showDropdown={dropdown}>
         <DivDone onClick={props.onCheckMarkClick}>
           {task.done ? (
@@ -59,11 +59,11 @@ const TaskItemView: React.FC<Props> = (props) => {
           onDeleteClick={props.onMenuDeleteClick}
         />
       )}
-    </DivTaskItemView>
+    </DivContainer>
   );
 };
 
-const DivTaskItemView = styled.div`
+const DivContainer = styled.div`
   position: 'relative';
 `;
 
@@ -149,5 +149,3 @@ const DivMenu = styled.div`
     cursor: pointer;
   }
 `;
-
-export default TaskItemView;

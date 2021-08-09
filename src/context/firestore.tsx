@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { createContext, useContext } from 'react';
+import React from 'react';
+import { createContext } from 'react';
 import { FirebaseFirestore, getFirestore } from 'firebase/firestore';
 
 const db = getFirestore();

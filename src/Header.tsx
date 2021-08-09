@@ -13,9 +13,9 @@ type Props = {
 const avatarUrl =
   'https://pbs.twimg.com/profile_images/424966163655708672/cBENTnEp_400x400.png';
 
-const Header: React.FC<Props> = (props) => {
+export const Header: React.FC<Props> = (props) => {
   return (
-    <DivHeader>
+    <DivContainer>
       <DivMenu onClick={props.onClickMenuHandler}>
         <UnorderedListIcon
           style={{
@@ -40,7 +40,7 @@ const Header: React.FC<Props> = (props) => {
         style={{ width: '28px', borderRadius: '50%' }}
         onClick={props.onClickAvatarHandler}
       />
-    </DivHeader>
+    </DivContainer>
   );
 };
 
@@ -56,7 +56,7 @@ const StyledPlusIcon = styled(PlusIcon)`
   fill: currentColor;
 `;
 
-const DivHeader = styled.div`
+const DivContainer = styled.div`
   background: #f19636;
   color: white;
   box-sizing: border-box;
