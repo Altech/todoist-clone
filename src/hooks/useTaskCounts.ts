@@ -21,7 +21,6 @@ export const useTaskCounts = () => {
   const [taskCounts, setTaskCounts] = useState<{ [key: string]: number }>({});
 
   const allTaskGroups = [Inbox, ...projects];
-  const paths = allTaskGroups.map((g) => getCollectionPath(g, user!));
 
   useEffect(() => {
     const unsbuscribes: Unsubscribe[] = [];
@@ -45,7 +44,7 @@ export const useTaskCounts = () => {
     return () => {
       unsbuscribes.forEach((unsubscribe) => unsubscribe());
     };
-  }, [JSON.stringify(paths)]);
+  }, [JSON.stringify(allTaskGroups.map((g) => getCollectionPath(g, user!)))]);
 
   return taskCounts;
 };

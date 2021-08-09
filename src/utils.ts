@@ -8,3 +8,13 @@ export const getCollectionPath = (taskGroup: TaskGroup, user: User) => {
     return `users/${user.uid}/tasks`;
   }
 };
+
+export const getTaskGroupTitle = (taskGroup: TaskGroup) => {
+  if (taskGroup.__type === 'project') {
+    return taskGroup.name;
+  } else if (taskGroup.__type === 'inbox') {
+    return 'インボックス';
+  } else if (taskGroup.__type === 'today') {
+    return '今日';
+  }
+};

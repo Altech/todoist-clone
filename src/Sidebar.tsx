@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import type { TaskGroup } from './Model';
+import { TaskGroup, TodayFilter } from './Model';
 import { Inbox } from './Model';
 import { ProjectsContext } from './context/projects';
 
@@ -11,6 +11,7 @@ import CalendarAltIcon from './svg/calendar-alt';
 import ChevronDownIcon from './svg/chevron-down';
 import CircleFilledIcon from './svg/circle-f';
 import { useTaskCounts } from './hooks/useTaskCounts';
+import { getTaskGroupTitle } from './utils';
 
 const colors: string[] = [
   '#9FC2E7',
@@ -35,11 +36,11 @@ export const Sidebar: React.FC<Props> = (props) => {
         <div>
           <DivItem
             iconColor="#246fe0"
-            onClick={() => props.switcher(Inbox)}
             focus={props.current === Inbox}
+            onClick={() => props.switcher(Inbox)}
           >
             <InboxIcon />
-            インボックス
+            {getTaskGroupTitle(Inbox)}
             <span>
               {taskCounts[Inbox.name] && taskCounts[Inbox.name] > 0
                 ? taskCounts[Inbox.name]
@@ -47,8 +48,13 @@ export const Sidebar: React.FC<Props> = (props) => {
             </span>
           </DivItem>
           <DivItem iconColor="#058527" focus={false}>
-            <CalendarIcon /> 今日
-            <span>{2}</span>
+            <CalendarIcon />
+            {getTaskGroupTitle(TodayFilter)}
+            <span>
+              {taskCounts[TodayFilter.name] && taskCounts[TodayFilter.name] > 0
+                ? taskCounts[TodayFilter.name]
+                : ''}
+            </span>
           </DivItem>
           <DivItem iconColor="#692fc2" focus={false}>
             <CalendarAltIcon />
