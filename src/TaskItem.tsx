@@ -13,7 +13,6 @@ import type { Task, TaskGroup } from './Model';
 import TaskItemView from './TaskItemView';
 import TaskItemForm from './TaskItemForm';
 import TaskItemPlaceholder from './TaskItemPlaceholder';
-import TaskDropDown from './TaskDropDown';
 
 type Props = {
   taskGroup: TaskGroup;
@@ -23,10 +22,9 @@ type Props = {
 type Mode = 'Placeholder' | 'View' | 'Form';
 
 // タスクの追加・表示・編集の三つのモードを請け負う。
-const EditableTask: React.FC<Props> = (props) => {
+const TaskItem: React.FC<Props> = (props) => {
   const db = useContext(FirestoreContext);
   const [mode, setMode] = useState<Mode>(props.task ? 'View' : 'Placeholder');
-  const [dropdown, setDropdown] = useState<boolean>(false);
 
   const collectionPath = getCollectionPath(props.taskGroup);
 
@@ -66,23 +64,14 @@ const EditableTask: React.FC<Props> = (props) => {
   } else if (mode === 'View') {
     const task = props.task as Task;
     return (
-      <div style={{ position: 'relative' }}>
-        <TaskItemView
-          key="view"
-          task={props.task as Task}
-          onCheckMarkClick={() => doneTask(task)}
-          onCenterClick={() => setMode('Form')}
-          onMenuClick={() => setDropdown(true)}
-          showControl={dropdown}
-        />
-        {dropdown && (
-          <TaskDropDown
-            key="dowpdown"
-            onEditClick={() => setMode('Form')}
-            onDeleteClick={() => deleteTask(task)}
-          />
-        )}
-      </div>
+      <TaskItemView
+        key="view"
+        task={props.task as Task}
+        onCheckMarkClick={() => doneTask(task)}
+        onCenterClick={() => setMode('Form')}
+        onMenuEditClick={() => setMode('Form')}
+        onMenuDeleteClick={() => deleteTask(task)}
+      />
     );
   } else {
     console.error('Unexpected case.');
@@ -90,4 +79,4 @@ const EditableTask: React.FC<Props> = (props) => {
   }
 };
 
-export default EditableTask;
+export default TaskItem;

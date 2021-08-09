@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import type { Task as TaskModel } from './Model';
+import TaskDropDown from './TaskDropDown';
 
 import CalendarIcon from './svg/calendar';
 import MoreIcon from './svg/more-horizontal-f';
@@ -9,57 +10,71 @@ import CircleUncheckedIcon from './svg/circle';
 import CircleCheckedIcon from './svg/chevron-circle-down-f';
 import CircleWillBeCheckedIcon from './svg/chevron-circle-down';
 
-type TaskProps = {
+type Props = {
   task: TaskModel;
   onCheckMarkClick: () => void;
   onCenterClick: () => void;
-  onMenuClick: () => void;
-  showControl: boolean;
+  onMenuEditClick: () => void;
+  onMenuDeleteClick: () => void;
 };
 
-const Task: React.FC<TaskProps> = (props) => {
+const TaskItemView: React.FC<Props> = (props) => {
   const task = props.task;
+  const [dropdown, setDropdown] = useState<boolean>(false);
 
   return (
-    <DivTask showControl={props.showControl}>
-      <DivDone onClick={props.onCheckMarkClick}>
-        {task.done ? (
-          <CircleCheckedIcon className="checked" />
-        ) : (
-          <div>
-            <CircleUncheckedIcon className="unchecked" />
-            <CircleWillBeCheckedIcon className="willbechecked" />
-          </div>
-        )}
-      </DivDone>
-      <DivCenter onClick={props.onCenterClick}>
-        <DivName>{task.name}</DivName>
-        <DivSubline>
-          {task.scheduledAt && (
-            <DivSchedule>
-              <CalendarIcon />
-              {`${task.scheduledAt.toDate().getMonth() + 1}月${task.scheduledAt
-                .toDate()
-                .getDate()}日`}
-            </DivSchedule>
+    <DivTaskItemView>
+      <DivTask showDropdown={dropdown}>
+        <DivDone onClick={props.onCheckMarkClick}>
+          {task.done ? (
+            <CircleCheckedIcon className="checked" />
+          ) : (
+            <div>
+              <CircleUncheckedIcon className="unchecked" />
+              <CircleWillBeCheckedIcon className="willbechecked" />
+            </div>
           )}
-        </DivSubline>
-      </DivCenter>
-      <DivMenu className="control" onClick={props.onMenuClick}>
-        <MoreIcon />
-      </DivMenu>
-    </DivTask>
+        </DivDone>
+        <DivCenter onClick={props.onCenterClick}>
+          <DivName>{task.name}</DivName>
+          <DivSubline>
+            {task.scheduledAt && (
+              <DivSchedule>
+                <CalendarIcon />
+                {`${
+                  task.scheduledAt.toDate().getMonth() + 1
+                }月${task.scheduledAt.toDate().getDate()}日`}
+              </DivSchedule>
+            )}
+          </DivSubline>
+        </DivCenter>
+        <DivMenu className="control" onClick={() => setDropdown(true)}>
+          <MoreIcon />
+        </DivMenu>
+      </DivTask>
+      {dropdown && (
+        <TaskDropDown
+          key="dowpdown"
+          onEditClick={props.onMenuEditClick}
+          onDeleteClick={props.onMenuDeleteClick}
+        />
+      )}
+    </DivTaskItemView>
   );
 };
 
-const DivTask = styled.div<{ showControl: boolean }>`
+const DivTaskItemView = styled.div`
+  position: 'relative';
+`;
+
+const DivTask = styled.div<{ showDropdown: boolean }>`
   display: flex;
   border-bottom: 1px solid rgb(240, 240, 240);
   padding-top: 8px;
   min-height: 28px;
 
   .control {
-    display: ${(props) => (props.showControl ? 'block' : 'none')};
+    display: ${(props) => (props.showDropdown ? 'block' : 'none')};
   }
   &:hover .control {
     display: block;
@@ -135,4 +150,4 @@ const DivMenu = styled.div`
   }
 `;
 
-export default Task;
+export default TaskItemView;

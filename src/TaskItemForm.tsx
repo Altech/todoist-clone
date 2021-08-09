@@ -26,7 +26,7 @@ function formatDate(date: Date): string {
   return `${y}-${m}-${d}`;
 }
 
-const EditTask: React.FC<Props> = (props) => {
+const TaskItemForm: React.FC<Props> = (props) => {
   const db = useContext(FirestoreContext);
   const [name, setName] = useState<string>(props.task?.name || '');
   const [scheduledAt, setscheduledAt] = useState<Timestamp | null>(
@@ -61,7 +61,7 @@ const EditTask: React.FC<Props> = (props) => {
   };
 
   return (
-    <DivEditTask>
+    <DivTaskItemForm>
       <form>
         <DivInputs>
           <InputName
@@ -93,11 +93,11 @@ const EditTask: React.FC<Props> = (props) => {
           </button>
         </DivButtons>
       </form>
-    </DivEditTask>
+    </DivTaskItemForm>
   );
 };
 
-const DivEditTask = styled.div`
+const DivTaskItemForm = styled.div`
   margin: 4px auto;
 `;
 
@@ -162,4 +162,4 @@ const DivButtons = styled.div`
   }
 `;
 
-export default EditTask;
+export default TaskItemForm;

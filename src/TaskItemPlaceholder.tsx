@@ -9,11 +9,11 @@ import PlusCircleIcon from './svg/plus-circle-f';
 
 // Task
 //-------------------------------------
-type TaskProps = {};
+type Props = {};
 
-const Task: React.FC<TaskProps> = (props) => {
+const TaskItemPlaceholder: React.FC<Props> = (props) => {
   return (
-    <DivTask>
+    <DivTaskItemPlaceholder>
       <DivAdd>
         <div className="state-normal">
           <PlusIcon />
@@ -25,11 +25,11 @@ const Task: React.FC<TaskProps> = (props) => {
       <DivCenter>
         <DivName className="name">タスクを追加</DivName>
       </DivCenter>
-    </DivTask>
+    </DivTaskItemPlaceholder>
   );
 };
 
-const DivTask = styled.div`
+const DivTaskItemPlaceholder = styled.div`
   display: flex;
   align-items: center;
 
@@ -86,4 +86,4 @@ const DivSubline = styled.div`
   }
 `;
 
-export default Task;
+export default TaskItemPlaceholder;
