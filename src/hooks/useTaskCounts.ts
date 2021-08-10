@@ -1,14 +1,13 @@
 import { useState, useEffect, useContext } from 'react';
 import {
   collection,
-  CollectionReference,
   onSnapshot,
   query,
   Unsubscribe,
   where,
 } from 'firebase/firestore';
 
-import type { Task } from '../data/task';
+import { TaskConverter } from '../data/task';
 import { Inbox } from '../Model';
 import { FirestoreContext } from '../context/firestore';
 import { ProjectsContext } from '../context/projects';
@@ -27,16 +26,12 @@ export const useTaskCounts = () => {
     const unsbuscribes: Unsubscribe[] = [];
     allTaskGroups.forEach((taskGroup) => {
       const path = getCollectionPath(taskGroup, user!);
-      const tasksCollection = collection(db, path) as CollectionReference<Task>;
+      const tasksCollection = collection(db, path).withConverter(TaskConverter);
       const q = query(tasksCollection, where('done', '==', false));
       const unsubscribe = onSnapshot(q, {
-        next: (snapshot) => {
+        next: (sn) => {
           setTaskCounts((prev) => {
-            let n = 0;
-            snapshot.forEach((_) => (n += 1));
-            const newTasksCounts = Object.assign({}, prev);
-            newTasksCounts[taskGroup.name] = n;
-            return newTasksCounts;
+            return { ...prev, [taskGroup.name]: sn.size };
           });
         },
       });

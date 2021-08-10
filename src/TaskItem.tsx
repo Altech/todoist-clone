@@ -1,18 +1,14 @@
 import React, { useContext, useState } from 'react';
-import {
-  collection,
-  CollectionReference,
-  deleteDoc,
-  doc,
-  setDoc,
-} from 'firebase/firestore';
+import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
 
 import { FirestoreContext } from './context/firestore';
 import { useCollectionPath } from './hooks/useCollectionPath';
-import type { Task, TaskGroup } from './Model';
+import type { Task } from './data/task';
+import type { TaskGroup } from './Model';
 import { TaskItemView } from './TaskItemView';
 import { TaskItemForm } from './TaskItemForm';
 import { TaskItemPlaceholder } from './TaskItemPlaceholder';
+import { TaskConverter } from './data/task';
 
 type Props = {
   taskGroup: TaskGroup;
@@ -30,20 +26,16 @@ export const TaskItem: React.FC<Props> = (props) => {
   const collectionPath = useCollectionPath(props.taskGroup);
 
   const doneTask = (task: Task) => {
-    const taskCollection = collection(
-      db,
-      collectionPath,
-    ) as CollectionReference<Task>;
-    const newTask = Object.assign({}, task);
-    newTask.done = true;
-    setDoc(doc(taskCollection, task.id), newTask);
+    const taskCollection = collection(db, collectionPath).withConverter(
+      TaskConverter,
+    );
+    setDoc(doc(taskCollection, task.id), { ...task, done: true });
   };
 
   const deleteTask = (task: Task) => {
-    const taskCollection = collection(
-      db,
-      collectionPath,
-    ) as CollectionReference<Task>;
+    const taskCollection = collection(db, collectionPath).withConverter(
+      TaskConverter,
+    );
     deleteDoc(doc(taskCollection, task.id)).catch((e) => console.log(e));
   };
 
