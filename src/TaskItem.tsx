@@ -17,7 +17,6 @@ type Props = {
 
 type Mode = 'Placeholder' | 'View' | 'Form';
 
-// タスクの追加・表示・編集の三つのモードを請け負う。
 export const TaskItem: React.FC<Props> = (props) => {
   const task = props.task;
   const db = useContext(FirestoreContext);

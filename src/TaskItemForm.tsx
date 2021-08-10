@@ -12,13 +12,6 @@ type Props = {
   onComplete: () => void;
 };
 
-function formatDate(date: Date): string {
-  const y = date.getFullYear().toString();
-  const m = ('0' + (date.getMonth() + 1)).slice(-2);
-  const d = ('0' + date.getDate()).slice(-2);
-  return `${y}-${m}-${d}`;
-}
-
 export const TaskItemForm: React.FC<Props> = (props) => {
   const db = useContext(FirestoreContext);
   const [task, setTask] = useState<Task>(props.task);
@@ -142,3 +135,10 @@ const DivButtons = styled.div`
     margin-left: 12px;
   }
 `;
+
+function formatDate(date: Date): string {
+  const y = date.getFullYear().toString();
+  const m = ('0' + (date.getMonth() + 1)).slice(-2);
+  const d = ('0' + date.getDate()).slice(-2);
+  return `${y}-${m}-${d}`;
+}

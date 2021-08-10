@@ -5,7 +5,9 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { firebaseAuth } from './firebase';
 import { UserContext } from './context/user';
 
-export const SignInStatusBar = () => {
+type Props = {};
+
+export const SignInStatusBar: React.FC<Props> = () => {
   const user = useContext(UserContext);
   // states for sign in
   const [email, setEmail] = useState<string>('');

@@ -6,7 +6,7 @@ import { UserProvider } from './context/user';
 
 import './App.css';
 
-interface Props {}
+type Props = {};
 
 export function App({}: Props) {
   return (

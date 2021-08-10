@@ -9,10 +9,6 @@ type Props = {
   onClickAvatarHandler: () => void;
 };
 
-// TODO: dummy
-const avatarUrl =
-  'https://pbs.twimg.com/profile_images/424966163655708672/cBENTnEp_400x400.png';
-
 export const Header: React.FC<Props> = (props) => {
   return (
     <DivContainer>
@@ -68,4 +64,6 @@ const DivContainer = styled.div`
   align-items: center;
 `;
 
-export default Header;
+// TODO: dummy
+const avatarUrl =
+  'https://pbs.twimg.com/profile_images/424966163655708672/cBENTnEp_400x400.png';

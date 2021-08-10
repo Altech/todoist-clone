@@ -13,14 +13,6 @@ import CircleFilledIcon from './svg/circle-f';
 import { useTaskCounts } from './hooks/useTaskCounts';
 import { getTaskGroupTitle } from './utils';
 
-const colors: string[] = [
-  '#9FC2E7',
-  '#91CA5C',
-  '#F29E4B',
-  '#50A7EF',
-  '#F4D246',
-];
-
 type Props = {
   current: TaskGroup;
   switcher: (arg: TaskGroup) => void;
@@ -153,3 +145,11 @@ const DivProjectsHeader = styled.div`
     fill: rgba(0, 0, 0, 0.44);
   }
 `;
+
+const colors: string[] = [
+  '#9FC2E7',
+  '#91CA5C',
+  '#F29E4B',
+  '#50A7EF',
+  '#F4D246',
+];

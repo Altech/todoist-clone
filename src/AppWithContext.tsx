@@ -9,7 +9,9 @@ import { Header } from './Header';
 import { Mainbar } from './Mainbar';
 import { Sidebar } from './Sidebar';
 
-export const AppWithContext: React.FC = () => {
+type Props = {};
+
+export const AppWithContext: React.FC<Props> = () => {
   const user = useContext(UserContext);
   const [statusBarShown, setStatusBarShown] = useState<boolean>(false);
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(true);
