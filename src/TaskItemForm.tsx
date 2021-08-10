@@ -1,20 +1,13 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import {
-  addDoc,
-  collection,
-  CollectionReference,
-  doc,
-  setDoc,
-  Timestamp,
-} from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
-import type { Task } from './Model';
+import { Task, TaskConverter } from './Model';
 import { FirestoreContext } from './context/firestore';
 
 type Props = {
   collectionPath: string;
-  task?: Task;
+  task: Task;
   onCancelClick: () => void;
   onComplete: () => void;
 };
@@ -28,33 +21,21 @@ function formatDate(date: Date): string {
 
 export const TaskItemForm: React.FC<Props> = (props) => {
   const db = useContext(FirestoreContext);
-  const [name, setName] = useState<string>(props.task?.name || '');
-  const [scheduledAt, setscheduledAt] = useState<Timestamp | null>(
-    props.task?.scheduledAt || null,
-  );
+  const [task, setTask] = useState<Task>(props.task);
 
-  const canSubmit = name.length > 0;
+  const canSubmit = task.name.length > 0;
 
   const submitHandler = (e: any) => {
     e.preventDefault();
-    const taskCollection = collection(
-      db,
-      props.collectionPath,
-    ) as CollectionReference<Task>;
-    const docData: Task = {
-      __type: 'task',
-      done: false,
-      name: name,
-      scheduledAt: scheduledAt,
-      createdAt: props?.task?.createdAt || Timestamp.fromDate(new Date()),
-    };
-    if (props.task) {
-      const docRef = doc(taskCollection, props.task.id);
-      setDoc(docRef, docData)
+    const taskCollection = collection(db, props.collectionPath).withConverter(
+      TaskConverter,
+    );
+    if (task.id) {
+      setDoc(doc(taskCollection, task.id), task)
         .then((_docRef) => props.onComplete())
         .catch((e) => console.log(e));
     } else {
-      addDoc<Task>(taskCollection, docData)
+      addDoc(taskCollection, task)
         .then((_docRef) => props.onComplete())
         .catch((e) => console.log(e));
     }
@@ -67,19 +48,19 @@ export const TaskItemForm: React.FC<Props> = (props) => {
           <InputName
             type="text"
             placeholder="タスク名"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={task.name}
+            onChange={(e) => setTask({ ...task, name: e.target.value })}
           />
           <DivSettings>
             <InputSchedule
               type="date"
-              value={scheduledAt ? formatDate(scheduledAt.toDate()) : ''}
+              value={task.scheduledAt ? formatDate(task.scheduledAt) : ''}
               onChange={(e) =>
-                setscheduledAt(
-                  e.target.value.length > 0
-                    ? Timestamp.fromDate(new Date(e.target.value))
-                    : null,
-                )
+                setTask({
+                  ...task,
+                  scheduledAt:
+                    e.target.value.length > 0 ? new Date(e.target.value) : null,
+                })
               }
             />
           </DivSettings>

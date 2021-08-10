@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import type { TaskGroup } from './Model';
+import { newTask, TaskGroup } from './Model';
 import { useTasks } from './hooks/useTasks';
 import { useCollectionPath } from './hooks/useCollectionPath';
 import { TaskItem } from './TaskItem';
@@ -32,7 +32,7 @@ export const Mainbar: React.FC<Props> = (props) => {
           {tasks.map((task) => (
             <TaskItem key={task.id} taskGroup={props.taskGroup} task={task} />
           ))}
-          <TaskItem taskGroup={props.taskGroup} />
+          <TaskItem taskGroup={props.taskGroup} task={newTask()} />
         </DivContent>
       </DivInnerContainer>
     </DivContainer>

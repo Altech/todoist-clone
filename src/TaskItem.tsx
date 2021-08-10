@@ -16,15 +16,16 @@ import { TaskItemPlaceholder } from './TaskItemPlaceholder';
 
 type Props = {
   taskGroup: TaskGroup;
-  task?: Task;
+  task: Task;
 };
 
 type Mode = 'Placeholder' | 'View' | 'Form';
 
 // タスクの追加・表示・編集の三つのモードを請け負う。
 export const TaskItem: React.FC<Props> = (props) => {
+  const task = props.task;
   const db = useContext(FirestoreContext);
-  const [mode, setMode] = useState<Mode>(props.task ? 'View' : 'Placeholder');
+  const [mode, setMode] = useState<Mode>(task.id ? 'View' : 'Placeholder');
 
   const collectionPath = useCollectionPath(props.taskGroup);
 
@@ -51,8 +52,8 @@ export const TaskItem: React.FC<Props> = (props) => {
       <TaskItemForm
         task={props.task}
         collectionPath={collectionPath}
-        onCancelClick={() => setMode(props.task ? 'View' : 'Placeholder')}
-        onComplete={() => setMode(props.task ? 'View' : 'Placeholder')}
+        onCancelClick={() => setMode(task.id ? 'View' : 'Placeholder')}
+        onComplete={() => setMode(task.id ? 'View' : 'Placeholder')}
       />
     );
   } else if (mode === 'Placeholder') {
@@ -62,11 +63,10 @@ export const TaskItem: React.FC<Props> = (props) => {
       </div>
     );
   } else if (mode === 'View') {
-    const task = props.task as Task;
     return (
       <TaskItemView
         key="view"
-        task={props.task as Task}
+        task={task}
         onCheckMarkClick={() => doneTask(task)}
         onCenterClick={() => setMode('Form')}
         onMenuEditClick={() => setMode('Form')}

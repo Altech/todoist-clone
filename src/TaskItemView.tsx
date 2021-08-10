@@ -42,8 +42,8 @@ export const TaskItemView: React.FC<Props> = (props) => {
               <DivSchedule>
                 <CalendarIcon />
                 {`${
-                  task.scheduledAt.toDate().getMonth() + 1
-                }月${task.scheduledAt.toDate().getDate()}日`}
+                  task.scheduledAt.getMonth() + 1
+                }月${task.scheduledAt.getDate()}日`}
               </DivSchedule>
             )}
           </DivSubline>
