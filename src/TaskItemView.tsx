@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import type { Task } from './Model';
+import type { Task } from './data/task';
 import { TaskDropDown } from './TaskDropDown';
 
 import CalendarIcon from './svg/calendar';

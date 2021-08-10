@@ -7,7 +7,7 @@ import {
 
 import { UserContext } from '../context/user';
 import { FirestoreContext } from '../context/firestore';
-import type { Project } from '../Model';
+import type { Project } from '../data/project';
 
 export const useProjects = (): Project[] => {
   const user = useContext(UserContext);

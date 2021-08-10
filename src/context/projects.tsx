@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react';
 
-import type { Project } from '../Model';
+import type { Project } from '../data/project';
 import { useProjects } from '../hooks/useProjects';
 
 export const ProjectsContext = createContext<Project[]>([]);

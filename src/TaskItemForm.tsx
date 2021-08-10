@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
-import { Task, TaskConverter } from './Model';
+import { Task, TaskConverter } from './data/task';
 import { FirestoreContext } from './context/firestore';
 
 type Props = {

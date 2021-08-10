@@ -1,14 +1,13 @@
 import { useState, useEffect, useContext } from 'react';
 import {
   collection,
-  CollectionReference,
   onSnapshot,
   orderBy,
   query,
   where,
 } from 'firebase/firestore';
 
-import { Task, TaskConverter } from '../Model';
+import { Task, TaskConverter } from '../data/task';
 import { FirestoreContext } from '../context/firestore';
 
 export const useTasks = (collectionPath: string) => {

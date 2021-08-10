@@ -8,7 +8,8 @@ import {
   where,
 } from 'firebase/firestore';
 
-import { Inbox, Task } from '../Model';
+import type { Task } from '../data/task';
+import { Inbox } from '../Model';
 import { FirestoreContext } from '../context/firestore';
 import { ProjectsContext } from '../context/projects';
 import { getCollectionPath } from '../utils';
