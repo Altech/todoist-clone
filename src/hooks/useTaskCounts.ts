@@ -26,8 +26,8 @@ export const useTaskCounts = () => {
     const unsbuscribes: Unsubscribe[] = [];
     allTaskGroups.forEach((taskGroup) => {
       const path = getCollectionPath(taskGroup, user!);
-      const tasksCollection = collection(db, path).withConverter(TaskConverter);
-      const q = query(tasksCollection, where('done', '==', false));
+      const col = collection(db, path).withConverter(TaskConverter);
+      const q = query(col, where('done', '==', false));
       const unsubscribe = onSnapshot(q, {
         next: (sn) => {
           setTaskCounts((prev) => {

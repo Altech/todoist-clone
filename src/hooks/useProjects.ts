@@ -15,11 +15,10 @@ export const useProjects = (): Project[] => {
       setProjects([]);
       return;
     }
-    const projectsCollection = collection(
-      db,
-      `users/${user!.uid}/projects`,
-    ).withConverter(ProjectConverter);
-    const unsubscribe = onSnapshot(projectsCollection, {
+    const col = collection(db, `users/${user!.uid}/projects`).withConverter(
+      ProjectConverter,
+    );
+    const unsubscribe = onSnapshot(col, {
       next: (sn) => {
         setProjects(sn.docs.map((docSn) => docSn.data()));
       },

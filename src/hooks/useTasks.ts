@@ -15,14 +15,8 @@ export const useTasks = (collectionPath: string) => {
   const [tasks, setTasks] = useState<Array<Task>>([]);
 
   useEffect(() => {
-    const tasksCollection = collection(db, collectionPath).withConverter(
-      TaskConverter,
-    );
-    const q = query(
-      tasksCollection,
-      where('done', '==', false),
-      orderBy('createdAt'),
-    );
+    const col = collection(db, collectionPath).withConverter(TaskConverter);
+    const q = query(col, where('done', '==', false), orderBy('createdAt'));
     const unsubscribe = onSnapshot(q, {
       next: (sn) => {
         setTasks(sn.docs.map((docSn) => docSn.data()));

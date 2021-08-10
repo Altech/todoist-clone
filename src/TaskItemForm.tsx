@@ -27,15 +27,15 @@ export const TaskItemForm: React.FC<Props> = (props) => {
 
   const submitHandler = (e: any) => {
     e.preventDefault();
-    const taskCollection = collection(db, props.collectionPath).withConverter(
+    const col = collection(db, props.collectionPath).withConverter(
       TaskConverter,
     );
     if (task.id) {
-      setDoc(doc(taskCollection, task.id), task)
+      setDoc(doc(col, task.id), task)
         .then((_docRef) => props.onComplete())
         .catch((e) => console.log(e));
     } else {
-      addDoc(taskCollection, task)
+      addDoc(col, task)
         .then((_docRef) => props.onComplete())
         .catch((e) => console.log(e));
     }

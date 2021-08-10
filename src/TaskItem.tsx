@@ -26,17 +26,13 @@ export const TaskItem: React.FC<Props> = (props) => {
   const collectionPath = useCollectionPath(props.taskGroup);
 
   const doneTask = (task: Task) => {
-    const taskCollection = collection(db, collectionPath).withConverter(
-      TaskConverter,
-    );
-    setDoc(doc(taskCollection, task.id), { ...task, done: true });
+    const col = collection(db, collectionPath).withConverter(TaskConverter);
+    setDoc(doc(col, task.id), { ...task, done: true });
   };
 
   const deleteTask = (task: Task) => {
-    const taskCollection = collection(db, collectionPath).withConverter(
-      TaskConverter,
-    );
-    deleteDoc(doc(taskCollection, task.id)).catch((e) => console.log(e));
+    const col = collection(db, collectionPath).withConverter(TaskConverter);
+    deleteDoc(doc(col, task.id)).catch((e) => console.log(e));
   };
 
   if (mode === 'Form') {
