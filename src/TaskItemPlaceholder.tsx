@@ -6,8 +6,6 @@ import MoreIcon from './svg/more-horizontal-f';
 import PlusIcon from './svg/plus';
 import PlusCircleIcon from './svg/plus-circle-f';
 
-// Task
-//-------------------------------------
 type Props = {};
 
 export const TaskItemPlaceholder: React.FC<Props> = (props) => {

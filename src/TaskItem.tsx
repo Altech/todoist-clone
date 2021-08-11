@@ -14,7 +14,6 @@ type Props = {
   taskGroup: TaskGroup;
   task: Task;
 };
-
 type Mode = 'Placeholder' | 'View' | 'Form';
 
 export const TaskItem: React.FC<Props> = (props) => {
