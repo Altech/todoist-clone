@@ -5,14 +5,24 @@ service cloud.firestore {
       allow read, write: if request.auth.uid == userId;
 
       match /tasks/{taskID} {
-        allow read, write: if request.auth.uid == userId;
+        allow read, delete: if request.auth.uid == userId
+        allow create, update: if request.auth.uid == userId && request.resource.data.userId == userId;
       }
+
       match /projects/{projectID} {
-        allow read, write: if request.auth.uid == userId;
+        allow read, delete: if request.auth.uid == userId
+        allow create, update: if request.auth.uid == userId && request.resource.data.userId == userId;
+
         match /tasks/{taskID} {
-          allow read, write: if request.auth.uid == userId;
+          allow read, delete: if request.auth.uid == userId
+          allow create, update: if request.auth.uid == userId && request.resource.data.userId == userId;
         }
       }
+    }
+
+   // For collection group
+    match /{path=**}/tasks/{taskId} {
+      allow read: if request.auth.uid == resource.data.userId;
     }
 
     match /{document=**} {

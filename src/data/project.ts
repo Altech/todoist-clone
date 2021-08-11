@@ -7,6 +7,7 @@ import {
 export type Project = {
   __type: 'project';
   id?: string;
+  userId: string;
   name: string;
   createdAt?: Date;
   color: string | null;
@@ -16,6 +17,7 @@ export const ProjectConverter: FirestoreDataConverter<Project> = {
   toFirestore: (project) => {
     return {
       __type: 'project',
+      userId: project.userId,
       name: project.name,
       createdAt: project.createdAt
         ? Timestamp.fromDate(project.createdAt)

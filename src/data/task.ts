@@ -7,15 +7,17 @@ import {
 export type Task = {
   __type: 'task';
   id?: string;
+  userId: string;
   createdAt?: Date;
   done: boolean;
   name: string;
   scheduledAt: Date | null;
 };
 
-export const newTask: () => Task = () => {
+export const newTask: (userId: string) => Task = (userId) => {
   return {
     __type: 'task',
+    userId: userId,
     done: false,
     name: '',
     scheduledAt: null,
@@ -26,6 +28,7 @@ export const TaskConverter: FirestoreDataConverter<Task> = {
   toFirestore: (task) => {
     return {
       __type: 'task',
+      userId: task.userId,
       done: task.done,
       name: task.name,
       scheduledAt: task.scheduledAt
