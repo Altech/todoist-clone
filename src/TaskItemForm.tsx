@@ -4,6 +4,7 @@ import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
 import { Task, TaskConverter } from './data/task';
 import { FirestoreContext } from './context/firestore';
+import { UserContext } from './context/user';
 
 type Props = {
   collectionPath: string;

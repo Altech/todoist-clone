@@ -39,7 +39,11 @@ export const Sidebar: React.FC<Props> = (props) => {
                 : ''}
             </span>
           </DivItem>
-          <DivItem iconColor="#058527" focus={false}>
+          <DivItem
+            iconColor="#058527"
+            focus={props.current === TodayFilter}
+            onClick={() => props.switcher(TodayFilter)}
+          >
             <CalendarIcon />
             {getTaskGroupTitle(TodayFilter)}
             <span>

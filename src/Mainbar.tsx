@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import type { TaskGroup } from './Model';
@@ -8,17 +8,17 @@ import { useCollectionPath } from './hooks/useCollectionPath';
 import { TaskItem } from './TaskItem';
 
 import MoreHorizontalIcon from './svg/more-horizontal';
+import { getTaskGroupTitle } from './utils';
+import { UserContext } from './context/user';
 
 type Props = {
   taskGroup: TaskGroup;
 };
 
 export const Mainbar: React.FC<Props> = (props) => {
-  const title =
-    props.taskGroup.__type === 'project'
-      ? props.taskGroup.name
-      : 'インボックス';
-  const tasks = useTasks(useCollectionPath(props.taskGroup));
+  const user = useContext(UserContext);
+  const title = getTaskGroupTitle(props.taskGroup);
+  const tasks = useTasks(props.taskGroup);
 
   return (
     <DivContainer>
@@ -33,7 +33,7 @@ export const Mainbar: React.FC<Props> = (props) => {
           {tasks.map((task) => (
             <TaskItem key={task.id} taskGroup={props.taskGroup} task={task} />
           ))}
-          <TaskItem taskGroup={props.taskGroup} task={newTask()} />
+          <TaskItem taskGroup={props.taskGroup} task={newTask(user!.uid)} />
         </DivContent>
       </DivInnerContainer>
     </DivContainer>
