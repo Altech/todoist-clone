@@ -9,6 +9,7 @@ import InboxIcon from './svg/inbox';
 import CalendarIcon from './svg/calendar';
 import CalendarAltIcon from './svg/calendar-alt';
 import ChevronDownIcon from './svg/chevron-down';
+import ChevronRightIcon from './svg/chevron-right';
 import CircleFilledIcon from './svg/circle-f';
 import { useTaskCounts } from './hooks/useTaskCounts';
 import { getTaskGroupTitle } from './utils';
@@ -22,6 +23,7 @@ export const Sidebar: React.FC<Props> = (props) => {
   const projects = useContext(ProjectsContext);
   const counts = useTaskCounts();
   const specialTaskGroups: TaskGroup[] = [Inbox, TodayFilter, RecentFilter];
+  const [expanded, setExpanded] = useState<boolean>(true);
 
   return (
     <DivContainer>
@@ -45,29 +47,30 @@ export const Sidebar: React.FC<Props> = (props) => {
           ))}
         </div>
         <div>
-          <DivProjectsHeader>
-            <ChevronDownIcon />
+          <DivProjectsHeader onClick={() => setExpanded(!expanded)}>
+            {expanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
             Projects
           </DivProjectsHeader>
-          {projects.map((project) => {
-            const taskCount = counts[project.name];
-            return (
-              <DivItem
-                key={project.name}
-                iconColor={project.color}
-                iconIsSmall={true}
-                focus={
-                  props.current.__type === 'project' &&
-                  props.current.name === project.name
-                }
-                onClick={() => props.switcher(project)}
-              >
-                <CircleFilledIcon />
-                {project.name}
-                <span>{taskCount && taskCount > 0 ? taskCount : ''}</span>
-              </DivItem>
-            );
-          })}
+          {expanded &&
+            projects.map((project) => {
+              const taskCount = counts[project.name];
+              return (
+                <DivItem
+                  key={project.name}
+                  iconColor={project.color}
+                  iconIsSmall={true}
+                  focus={
+                    props.current.__type === 'project' &&
+                    props.current.name === project.name
+                  }
+                  onClick={() => props.switcher(project)}
+                >
+                  <CircleFilledIcon />
+                  {project.name}
+                  <span>{taskCount && taskCount > 0 ? taskCount : ''}</span>
+                </DivItem>
+              );
+            })}
         </div>
       </div>
     </DivContainer>
@@ -129,6 +132,10 @@ const DivProjectsHeader = styled.div`
   align-items: center;
   font-size: 14px;
   font-weight: 700;
+
+  &:hover {
+    cursor: pointer;
+  }
 
   svg {
     padding-left: 4px;
