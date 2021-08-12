@@ -5,6 +5,7 @@ import PencilIcon from './svg/pencil';
 import TrashIcon from './svg/trash';
 
 type Props = {
+  closer: () => void;
   onEditClick: () => void;
   onDeleteClick: () => void;
 };
@@ -12,26 +13,51 @@ type Props = {
 export const TaskDropDown: React.FC<Props> = (props) => {
   return (
     <DivContainer>
-      <ul>
-        <li onClick={props.onEditClick}>
-          <PencilIcon />
-          Edit task
-        </li>
-        <li onClick={props.onDeleteClick}>
-          <TrashIcon />
-          Delete task
-        </li>
-      </ul>
+      <DivOverlay onClick={props.closer}></DivOverlay>
+      <DivMain>
+        <ul>
+          <li
+            onClick={() => {
+              props.closer();
+              props.onEditClick();
+            }}
+          >
+            <PencilIcon />
+            Edit task
+          </li>
+          <li
+            onClick={() => {
+              props.closer();
+              props.onEditClick();
+            }}
+          >
+            <TrashIcon />
+            Delete task
+          </li>
+        </ul>
+      </DivMain>
     </DivContainer>
   );
 };
 
-const DivContainer = styled.div`
+const DivContainer = styled.div``;
+
+const DivOverlay = styled.div`
+  background: rgb(0, 0, 0, 0);
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: 1;
+`;
+
+const DivMain = styled.div`
   position: absolute;
   top: 26px;
   right: 8px;
   width: 252px;
-  z-index: 1;
+  z-index: 2;
 
   background: white;
   border: 1px solid #ddd;

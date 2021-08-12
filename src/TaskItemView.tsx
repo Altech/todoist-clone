@@ -43,7 +43,7 @@ export const TaskItemView: React.FC<Props> = (props) => {
                 <CalendarIcon />
                 {`${
                   task.scheduledAt.getMonth() + 1
-                }月${task.scheduledAt.getDate()}日`}
+                }/${task.scheduledAt.getDate()}`}
               </DivSchedule>
             )}
           </DivSubline>
@@ -55,6 +55,7 @@ export const TaskItemView: React.FC<Props> = (props) => {
       {dropdown && (
         <TaskDropDown
           key="dowpdown"
+          closer={() => setDropdown(false)}
           onEditClick={props.onMenuEditClick}
           onDeleteClick={props.onMenuDeleteClick}
         />
@@ -64,7 +65,7 @@ export const TaskItemView: React.FC<Props> = (props) => {
 };
 
 const DivContainer = styled.div`
-  position: 'relative';
+  position: relative;
 `;
 
 const DivTask = styled.div<{ showDropdown: boolean }>`
