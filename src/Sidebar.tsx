@@ -47,7 +47,7 @@ export const Sidebar: React.FC<Props> = (props) => {
         <div>
           <DivProjectsHeader>
             <ChevronDownIcon />
-            プロジェクト
+            Projects
           </DivProjectsHeader>
           {projects.map((project) => {
             const taskCount = counts[project.name];

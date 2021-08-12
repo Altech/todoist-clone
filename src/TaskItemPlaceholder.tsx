@@ -20,7 +20,7 @@ export const TaskItemPlaceholder: React.FC<Props> = (props) => {
         </div>
       </DivAdd>
       <DivCenter>
-        <DivName className="name">タスクを追加</DivName>
+        <DivName className="name">Add task</DivName>
       </DivCenter>
     </DivContainer>
   );

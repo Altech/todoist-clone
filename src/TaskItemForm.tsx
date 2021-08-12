@@ -4,7 +4,6 @@ import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
 import { Task, TaskConverter } from './data/task';
 import { FirestoreContext } from './context/firestore';
-import { UserContext } from './context/user';
 
 type Props = {
   collectionPath: string;
@@ -41,7 +40,7 @@ export const TaskItemForm: React.FC<Props> = (props) => {
         <DivInputs>
           <InputName
             type="text"
-            placeholder="タスク名"
+            placeholder="Task name"
             value={task.name}
             onChange={(e) => setTask({ ...task, name: e.target.value })}
           />
@@ -61,10 +60,10 @@ export const TaskItemForm: React.FC<Props> = (props) => {
         </DivInputs>
         <DivButtons>
           <button type="submit" disabled={!canSubmit} onClick={submitHandler}>
-            タスクを追加
+            Add task
           </button>
           <button type="reset" onClick={props.onCancelClick}>
-            キャンセル
+            Cancel
           </button>
         </DivButtons>
       </form>

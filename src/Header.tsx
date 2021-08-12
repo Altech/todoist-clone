@@ -31,6 +31,7 @@ export const Header: React.FC<Props> = (props) => {
 };
 
 const DivMenu = styled.div`
+  margin-top: 3px;
   &:hover {
     cursor: pointer;
   }

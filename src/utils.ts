@@ -4,10 +4,10 @@ export const getTaskGroupTitle = (taskGroup: TaskGroup) => {
   if (taskGroup.__type === 'project') {
     return taskGroup.name;
   } else if (taskGroup.__type === 'inbox') {
-    return 'インボックス';
+    return 'Inbox';
   } else if (taskGroup.__type === 'today') {
-    return '今日';
+    return 'Today';
   } else if (taskGroup.__type === 'recent') {
-    return '近日予定';
+    return 'Upcomming';
   }
 };

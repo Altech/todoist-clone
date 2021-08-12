@@ -15,11 +15,11 @@ export const TaskDropDown: React.FC<Props> = (props) => {
       <ul>
         <li onClick={props.onEditClick}>
           <PencilIcon />
-          タスクを編集
+          Edit task
         </li>
         <li onClick={props.onDeleteClick}>
           <TrashIcon />
-          タスクを削除
+          Delete task
         </li>
       </ul>
     </DivContainer>
