@@ -39,6 +39,9 @@ const DivContainer = styled.div`
   .state-normal {
     display: block;
   }
+  .name {
+    color: gray;
+  }
   &:hover {
     cursor: pointer;
   }

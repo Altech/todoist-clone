@@ -29,6 +29,8 @@ export const RecentFilter: RecentFilterType = {
 };
 
 // Firestore definitions
+// -------------------------------------------------------------------------
+
 export const getCollectionPath = (taskGroup: TaskGroup, userId: string) => {
   if (taskGroup.__type === 'project') {
     return `users/${userId}/projects/${taskGroup.id}/tasks`;

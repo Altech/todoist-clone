@@ -18,14 +18,16 @@ export const useTaskCounts = () => {
   useEffect(() => {
     const unsbuscribes: Unsubscribe[] = [];
     allTaskGroups.forEach((taskGroup) => {
-      const q = genTaskGroupQuery(db, user!.uid, taskGroup);
-      const unsubscribe = onSnapshot(q, {
-        next: (sn) => {
-          setTaskCounts((prev) => {
-            return { ...prev, [taskGroup.name]: sn.size };
-          });
+      const unsubscribe = onSnapshot(
+        genTaskGroupQuery(db, user!.uid, taskGroup),
+        {
+          next: (sn) => {
+            setTaskCounts((prev) => {
+              return { ...prev, [taskGroup.name]: sn.size };
+            });
+          },
         },
-      });
+      );
       unsbuscribes.push(unsubscribe);
     });
     return () => {
