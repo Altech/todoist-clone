@@ -2,13 +2,14 @@ import React, { useContext, useState } from 'react';
 import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
 
 import { FirestoreContext } from './context/firestore';
-import { useCollectionPath } from './hooks/useCollectionPath';
+import { UserContext } from './context/user';
 import type { Task } from './data/task';
 import type { TaskGroup } from './Model';
 import { TaskItemView } from './TaskItemView';
 import { TaskItemForm } from './TaskItemForm';
 import { TaskItemPlaceholder } from './TaskItemPlaceholder';
 import { TaskConverter } from './data/task';
+import { getCollectionPath } from './Model';
 
 type Props = {
   taskGroup: TaskGroup;
@@ -17,11 +18,12 @@ type Props = {
 type Mode = 'Placeholder' | 'View' | 'Form';
 
 export const TaskItem: React.FC<Props> = (props) => {
-  const task = props.task;
+  const user = useContext(UserContext);
   const db = useContext(FirestoreContext);
+  const task = props.task;
   const [mode, setMode] = useState<Mode>(task.id ? 'View' : 'Placeholder');
 
-  const collectionPath = useCollectionPath(props.taskGroup);
+  const collectionPath = getCollectionPath(props.taskGroup, user!.uid);
 
   const doneTask = (task: Task) => {
     const col = collection(db, collectionPath).withConverter(TaskConverter);

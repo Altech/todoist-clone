@@ -1,18 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
-import {
-  collection,
-  onSnapshot,
-  query,
-  Unsubscribe,
-  where,
-} from 'firebase/firestore';
+import { onSnapshot, Unsubscribe } from 'firebase/firestore';
 
-import { TaskConverter } from '../data/task';
-import { Inbox } from '../Model';
+import { Inbox, RecentFilter, TodayFilter } from '../Model';
 import { FirestoreContext } from '../context/firestore';
 import { ProjectsContext } from '../context/projects';
-import { getCollectionPath } from '../utils';
 import { UserContext } from '../context/user';
+import { genTaskGroupQuery } from '../Model';
 
 export const useTaskCounts = () => {
   const user = useContext(UserContext);
@@ -20,14 +13,12 @@ export const useTaskCounts = () => {
   const projects = useContext(ProjectsContext);
   const [taskCounts, setTaskCounts] = useState<{ [key: string]: number }>({});
 
-  const allTaskGroups = [Inbox, ...projects];
+  const allTaskGroups = [Inbox, TodayFilter, RecentFilter, ...projects];
 
   useEffect(() => {
     const unsbuscribes: Unsubscribe[] = [];
     allTaskGroups.forEach((taskGroup) => {
-      const path = getCollectionPath(taskGroup, user!);
-      const col = collection(db, path).withConverter(TaskConverter);
-      const q = query(col, where('done', '==', false));
+      const q = genTaskGroupQuery(db, user!.uid, taskGroup);
       const unsubscribe = onSnapshot(q, {
         next: (sn) => {
           setTaskCounts((prev) => {
@@ -40,7 +31,7 @@ export const useTaskCounts = () => {
     return () => {
       unsbuscribes.forEach((unsubscribe) => unsubscribe());
     };
-  }, [JSON.stringify(allTaskGroups.map((g) => getCollectionPath(g, user!)))]);
+  }, [JSON.stringify(allTaskGroups.map((g) => [g.__type, g.name]))]);
 
   return taskCounts;
 };

@@ -1,17 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
-import {
-  collection,
-  collectionGroup,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from 'firebase/firestore';
+import { onSnapshot } from 'firebase/firestore';
 
-import { Task, TaskConverter } from '../data/task';
+import type { Task } from '../data/task';
 import { FirestoreContext } from '../context/firestore';
-import { TaskGroup, TodayFilter } from '../Model';
-import { getCollectionPath } from '../utils';
+import { genTaskGroupQuery, TaskGroup } from '../Model';
 import { UserContext } from '../context/user';
 
 export const useTasks = (taskGroup: TaskGroup) => {
@@ -19,37 +11,17 @@ export const useTasks = (taskGroup: TaskGroup) => {
   const db = useContext(FirestoreContext);
   const [tasks, setTasks] = useState<Array<Task>>([]);
 
-  if (taskGroup !== TodayFilter) {
-    const collectionPath = getCollectionPath(taskGroup, user!);
-
-    useEffect(() => {
-      const col = collection(db, collectionPath).withConverter(TaskConverter);
-      const q = query(col, where('done', '==', false), orderBy('createdAt'));
-      const unsubscribe = onSnapshot(q, {
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      genTaskGroupQuery(db, user!.uid, taskGroup),
+      {
         next: (sn) => {
           setTasks(sn.docs.map((docSn) => docSn.data()));
         },
-      });
-      return unsubscribe;
-    }, [taskGroup.name]); // temp
+      },
+    );
+    return unsubscribe;
+  }, [taskGroup.__type, taskGroup.name]);
 
-    return tasks;
-  } else {
-    useEffect(() => {
-      const colGr = collectionGroup(db, 'tasks').withConverter(TaskConverter);
-      const q = query(
-        colGr,
-        where('userId', '==', user!.uid),
-        where('scheduledAt', '<=', new Date()),
-        orderBy('scheduledAt'),
-      );
-      const unsubscribe = onSnapshot(q, {
-        next: (sn) => {
-          setTasks(sn.docs.map((docSn) => docSn.data()));
-        },
-      });
-      return unsubscribe;
-    }, [taskGroup.name]);
-    return tasks;
-  }
+  return tasks;
 };

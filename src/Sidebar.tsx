@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { TaskGroup, TodayFilter } from './Model';
+import { RecentFilter, TaskGroup, TodayFilter } from './Model';
 import { Inbox } from './Model';
 import { ProjectsContext } from './context/projects';
 
@@ -20,42 +20,29 @@ type Props = {
 
 export const Sidebar: React.FC<Props> = (props) => {
   const projects = useContext(ProjectsContext);
-  const taskCounts = useTaskCounts();
+  const counts = useTaskCounts();
+  const specialTaskGroups: TaskGroup[] = [Inbox, TodayFilter, RecentFilter];
 
   return (
     <DivContainer>
       <div style={{ marginRight: '4px' }}>
         <div>
-          <DivItem
-            iconColor="#246fe0"
-            focus={props.current === Inbox}
-            onClick={() => props.switcher(Inbox)}
-          >
-            <InboxIcon />
-            {getTaskGroupTitle(Inbox)}
-            <span>
-              {taskCounts[Inbox.name] && taskCounts[Inbox.name] > 0
-                ? taskCounts[Inbox.name]
-                : ''}
-            </span>
-          </DivItem>
-          <DivItem
-            iconColor="#058527"
-            focus={props.current === TodayFilter}
-            onClick={() => props.switcher(TodayFilter)}
-          >
-            <CalendarIcon />
-            {getTaskGroupTitle(TodayFilter)}
-            <span>
-              {taskCounts[TodayFilter.name] && taskCounts[TodayFilter.name] > 0
-                ? taskCounts[TodayFilter.name]
-                : ''}
-            </span>
-          </DivItem>
-          <DivItem iconColor="#692fc2" focus={false}>
-            <CalendarAltIcon />
-            近日予定
-          </DivItem>
+          {specialTaskGroups.map((group) => (
+            <DivItem
+              key={group.name}
+              iconColor={specialTaskGroupIconColors[group.name]}
+              focus={props.current === group}
+              onClick={() => props.switcher(group)}
+            >
+              <InboxIcon />
+              {getTaskGroupTitle(group)}
+              <span>
+                {counts[group.name] && counts[group.name] > 0
+                  ? counts[group.name]
+                  : ''}
+              </span>
+            </DivItem>
+          ))}
         </div>
         <div>
           <DivProjectsHeader>
@@ -63,7 +50,7 @@ export const Sidebar: React.FC<Props> = (props) => {
             プロジェクト
           </DivProjectsHeader>
           {projects.map((project) => {
-            const taskCount = taskCounts[project.name];
+            const taskCount = counts[project.name];
             return (
               <DivItem
                 key={project.name}
@@ -157,3 +144,9 @@ const colors: string[] = [
   '#50A7EF',
   '#F4D246',
 ];
+
+const specialTaskGroupIconColors: { [key: string]: string } = {
+  __inbox__: '#246fe0',
+  __today__: '#058527',
+  __recent__: '#692fc2',
+};
