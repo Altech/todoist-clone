@@ -15,6 +15,7 @@ import { useTaskCounts } from './hooks/useTaskCounts';
 import { getTaskGroupTitle } from './utils';
 
 type Props = {
+  isShown: boolean;
   current: TaskGroup;
   switcher: (arg: TaskGroup) => void;
 };
@@ -26,7 +27,7 @@ export const Sidebar: React.FC<Props> = (props) => {
   const [expanded, setExpanded] = useState<boolean>(true);
 
   return (
-    <DivContainer>
+    <DivContainer isShown={props.isShown}>
       <div style={{ marginRight: '4px' }}>
         <div>
           {specialTaskGroups.map((group) => (
@@ -77,11 +78,12 @@ export const Sidebar: React.FC<Props> = (props) => {
   );
 };
 
-const DivContainer = styled.div`
+const DivContainer = styled.div<{ isShown: boolean }>`
   background: #fbfafa;
-  width: 304px;
+  width: ${(props) => (props.isShown ? '304px' : '0px')};
+  padding-left: ${(props) => (props.isShown ? '35px' : '0px')};
   padding-top: 30px;
-  padding-left: 35px;
+  transition: all 0.25s ease;
 `;
 
 const DivItem = styled.div<{
