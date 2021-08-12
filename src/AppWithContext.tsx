@@ -2,8 +2,8 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 import { UserContext } from './context/user';
-import type { TaskGroup } from './Model';
-import { Inbox } from './Model';
+import type { TaskGroup } from './model';
+import { Inbox } from './model';
 import { SignInStatusBar } from './SignInStatusBar';
 import { Header } from './Header';
 import { Mainbar } from './Mainbar';

@@ -1,4 +1,4 @@
-import type { TaskGroup } from './Model';
+import type { TaskGroup } from './model';
 
 export const getTaskGroupTitle = (taskGroup: TaskGroup) => {
   if (taskGroup.__type === 'project') {

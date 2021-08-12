@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { RecentFilter, TaskGroup, TodayFilter } from './Model';
-import { Inbox } from './Model';
+import { RecentFilter, TaskGroup, TodayFilter } from './model';
+import { Inbox } from './model';
 import { ProjectsContext } from './context/projects';
 
 import InboxIcon from './svg/inbox';

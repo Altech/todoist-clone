@@ -4,12 +4,12 @@ import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { FirestoreContext } from './context/firestore';
 import { UserContext } from './context/user';
 import type { Task } from './data/task';
-import type { TaskGroup } from './Model';
+import type { TaskGroup } from './model';
 import { TaskItemView } from './TaskItemView';
 import { TaskItemForm } from './TaskItemForm';
 import { TaskItemPlaceholder } from './TaskItemPlaceholder';
 import { TaskConverter } from './data/task';
-import { getCollectionPath } from './Model';
+import { getCollectionPath } from './model';
 
 type Props = {
   taskGroup: TaskGroup;

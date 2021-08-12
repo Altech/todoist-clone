@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
 import { onSnapshot, Unsubscribe } from 'firebase/firestore';
 
-import { Inbox, RecentFilter, TodayFilter } from '../Model';
+import { Inbox, RecentFilter, TodayFilter } from '../model';
 import { FirestoreContext } from '../context/firestore';
 import { ProjectsContext } from '../context/projects';
 import { UserContext } from '../context/user';
-import { genTaskGroupQuery } from '../Model';
+import { genTaskGroupQuery } from '../model';
 
 export const useTaskCounts = () => {
   const user = useContext(UserContext);

@@ -3,7 +3,7 @@ import { onSnapshot } from 'firebase/firestore';
 
 import type { Task } from '../data/task';
 import { FirestoreContext } from '../context/firestore';
-import { genTaskGroupQuery, TaskGroup } from '../Model';
+import { genTaskGroupQuery, TaskGroup } from '../model';
 import { UserContext } from '../context/user';
 
 export const useTasks = (taskGroup: TaskGroup) => {
