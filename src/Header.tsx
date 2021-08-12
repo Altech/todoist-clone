@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import PlusIcon from './svg/plus-rectangle';
 import UnorderedListIcon from './svg/unordered-list';
 
 type Props = {
@@ -22,18 +21,9 @@ export const Header: React.FC<Props> = (props) => {
           }}
         />
       </DivMenu>
-      <PlusIcon
-        style={{
-          width: '16px',
-          height: '16px',
-          fill: 'currentColor',
-          padding: '8px',
-          marginLeft: 'auto',
-        }}
-      />
       <img
         src={avatarUrl}
-        style={{ width: '28px', borderRadius: '50%' }}
+        style={{ width: '28px', borderRadius: '50%', marginLeft: 'auto' }}
         onClick={props.onClickAvatarHandler}
       />
     </DivContainer>
@@ -44,12 +34,6 @@ const DivMenu = styled.div`
   &:hover {
     cursor: pointer;
   }
-`;
-
-const StyledPlusIcon = styled(PlusIcon)`
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
 `;
 
 const DivContainer = styled.div`
