@@ -65,7 +65,7 @@ export const Sidebar: React.FC<Props> = (props) => {
             >
               <PlusIcon />
             </DivProjectsRight>
-            {user && addProjectModal && (
+            {addProjectModal && (
               <AddProjectModal
                 closer={() => setAddProjectModal(false)}
                 project={newProject(user!.uid)}

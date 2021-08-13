@@ -1,6 +1,9 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 
 import { firebaseAuth } from './firebase';
 import { UserContext } from './context/user';
@@ -15,77 +18,89 @@ export const SignInStatusBar: React.FC<Props> = () => {
   // states for sign up
   const [expand, setExpand] = useState<boolean>(false);
 
-  const loginHandler = (e: any) => {
+  const handlerGen = (type: 'SignIn' | 'SignUp') => (e: any) => {
     e.preventDefault();
     // This change will trigger `onAuthStateChanged`
-    signInWithEmailAndPassword(firebaseAuth, email, password)
+    const proc =
+      type === 'SignIn'
+        ? signInWithEmailAndPassword
+        : createUserWithEmailAndPassword;
+    debugger;
+    proc(firebaseAuth, email, password)
       .then((userCredential) => {
-        console.log('sign in success.');
+        console.log('Auth success.');
       })
       .catch((error) => {
         console.log(error);
-        alert('Failed to sign in');
+        alert('Failed to auth');
       });
-    return false;
   };
 
   if (user) {
     return (
-      <DivContainer type={'SignIn'}>
-        <div>▷ user ID: {user.uid}</div>
-        <button
-          onClick={() => {
-            firebaseAuth.signOut();
-            // This change will trigger `onAuthStateChanged`
-          }}
-        >
-          Sign Out
-        </button>
+      <DivContainer>
+        <DivSignedIn>
+          <div>▷ user ID: {user.uid}</div>
+          <button
+            onClick={() => {
+              firebaseAuth.signOut();
+              // This change will trigger `onAuthStateChanged`
+            }}
+          >
+            Sign Out
+          </button>
+        </DivSignedIn>
       </DivContainer>
     );
   } else {
     return (
-      <DivContainer type={'SignUp'}>
-        {
-          <div>
-            <span onClick={() => setExpand((prev) => !prev)}>
-              {expand ? '▼ ' : '▶︎ '}
-            </span>
-            user ID: ---
-          </div>
-        }
-        {expand && (
-          <div>
-            <h3>Sign In</h3>
-            <form className="SignInForm">
-              <div>
-                email:
-                <input
-                  type="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div>
-                password:
-                <input
-                  type="password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <button type="submit" onClick={loginHandler}>
-                Sign In
-              </button>
-            </form>
-            <h3>Sign Up</h3>
-            (TODO: ui)
-          </div>
-        )}
+      <DivContainer>
+        <DivSignedOut>
+          {
+            <div>
+              <span
+                onClick={() => setExpand((prev) => !prev)}
+                className="toggle"
+              >
+                {expand ? '▼ ' : '▶︎ '}
+              </span>
+              user ID: ---
+            </div>
+          }
+          {expand && (
+            <div>
+              <h3>Sign In or Sign Up</h3>
+              <form className="SignInForm">
+                <div>
+                  <label>email:</label>
+                  <input
+                    type="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label> password:</label>
+                  <input
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <button type="submit" onClick={handlerGen('SignIn')}>
+                  Sign In
+                </button>
+                <button type="submit" onClick={handlerGen('SignUp')}>
+                  Sign Up
+                </button>
+              </form>
+            </div>
+          )}
+        </DivSignedOut>
       </DivContainer>
     );
   }
 };
 
-const DivContainer = styled.div<{ type: 'SignIn' | 'SignUp' }>`
+const DivContainer = styled.div`
   position: fixed;
   bottom: 0px;
   left: 0px;
@@ -93,10 +108,33 @@ const DivContainer = styled.div<{ type: 'SignIn' | 'SignUp' }>`
   background: rgb(89, 89, 89);
   color: white;
   padding: 14px;
+`;
 
-  display: ${(props) => (props.type === 'SignIn' ? 'flex' : 'block')};
+const DivSignedIn = styled.div`
+  display: flex;
+  button {
+    margin-left: auto;
+  }
+  label {
+    display: inline-block;
+    width: 100px;
+  }
+`;
+
+const DivSignedOut = styled.div`
+  display: block;
+
+  .toggle:hover {
+    cursor: pointer;
+  }
 
   button {
-    margin-left: ${(props) => (props.type === 'SignIn' ? 'auto' : '0')};
+    margin-top: 14px;
+    margin-left: 0;
+    margin-right: 10px;
+  }
+  label {
+    display: inline-block;
+    width: 100px;
   }
 `;
