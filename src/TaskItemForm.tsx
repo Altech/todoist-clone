@@ -25,12 +25,12 @@ export const TaskItemForm: React.FC<Props> = (props) => {
     );
     if (task.id) {
       setDoc(doc(col, task.id), task)
-        .then((_docRef) => props.onComplete())
-        .catch((e) => console.log(e));
+        .then((_task) => props.onComplete())
+        .catch((e) => console.error(e));
     } else {
       addDoc(col, task)
         .then((_docRef) => props.onComplete())
-        .catch((e) => console.log(e));
+        .catch((e) => console.error(e));
     }
   };
 

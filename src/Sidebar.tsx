@@ -1,9 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { UserContext } from './context/user';
 import { RecentFilter, TaskGroup, TodayFilter } from './model';
 import { Inbox } from './model';
 import { ProjectsContext } from './context/projects';
+import { useTaskCounts } from './hooks/useTaskCounts';
+import { getTaskGroupTitle } from './utils';
+import { AddProjectModal } from './AddProjectModal';
+import { newProject } from './data/project';
 
 import InboxIcon from './svg/inbox';
 import CalendarIcon from './svg/calendar';
@@ -11,8 +16,7 @@ import CalendarAltIcon from './svg/calendar-alt';
 import ChevronDownIcon from './svg/chevron-down';
 import ChevronRightIcon from './svg/chevron-right';
 import CircleFilledIcon from './svg/circle-f';
-import { useTaskCounts } from './hooks/useTaskCounts';
-import { getTaskGroupTitle } from './utils';
+import PlusIcon from './svg/plus';
 
 type Props = {
   isShown: boolean;
@@ -21,10 +25,12 @@ type Props = {
 };
 
 export const Sidebar: React.FC<Props> = (props) => {
+  const user = useContext(UserContext);
   const projects = useContext(ProjectsContext);
   const counts = useTaskCounts();
   const specialTaskGroups: TaskGroup[] = [Inbox, TodayFilter, RecentFilter];
   const [expanded, setExpanded] = useState<boolean>(true);
+  const [addProjectModal, setAddProjectModal] = useState<boolean>(false);
 
   return (
     <DivContainer isShown={props.isShown}>
@@ -48,10 +54,24 @@ export const Sidebar: React.FC<Props> = (props) => {
           ))}
         </div>
         <div>
-          <DivProjectsHeader onClick={() => setExpanded(!expanded)}>
-            {expanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
-            Projects
-          </DivProjectsHeader>
+          <DivProjects>
+            <DivProjectsLeft onClick={() => setExpanded(!expanded)}>
+              {expanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
+              Projects
+            </DivProjectsLeft>
+            <DivProjectsRight
+              className="addProject"
+              onClick={() => setAddProjectModal(true)}
+            >
+              <PlusIcon />
+            </DivProjectsRight>
+            {user && addProjectModal && (
+              <AddProjectModal
+                closer={() => setAddProjectModal(false)}
+                project={newProject(user!.uid)}
+              />
+            )}
+          </DivProjects>
           {expanded &&
             projects.map((project) => {
               const taskCount = counts[project.name];
@@ -125,21 +145,52 @@ const DivItem = styled.div<{
   }
 `;
 
-const DivProjectsHeader = styled.div`
+const DivProjects = styled.div`
+  display: flex;
+  align-items: center;
   margin-top: 12px;
   padding-top: 10px;
   padding-bottom: 10px;
 
+  .addProject {
+    display: none;
+  }
+  &:hover .addProject {
+    display: flex;
+  }
+`;
+
+const DivProjectsLeft = styled.div`
   display: flex;
   align-items: center;
   font-size: 14px;
   font-weight: 700;
+  flex-grow: 1;
 
   &:hover {
     cursor: pointer;
   }
 
   svg {
+    padding-left: 4px;
+    padding-right: 4px;
+    fill: rgba(0, 0, 0, 0.44);
+  }
+`;
+
+const DivProjectsRight = styled.div`
+  margin-left: auto;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
     padding-left: 4px;
     padding-right: 4px;
     fill: rgba(0, 0, 0, 0.44);

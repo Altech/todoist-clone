@@ -10,7 +10,16 @@ export type Project = {
   userId: string;
   name: string;
   createdAt?: Date;
-  color: string | null;
+  color: string;
+};
+
+export const newProject: (userId: string) => Project = (userId) => {
+  return {
+    __type: 'project',
+    userId: userId,
+    name: '',
+    color: '#757575',
+  };
 };
 
 export const ProjectConverter: FirestoreDataConverter<Project> = {
