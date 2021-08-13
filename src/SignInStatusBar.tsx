@@ -25,7 +25,6 @@ export const SignInStatusBar: React.FC<Props> = () => {
       type === 'SignIn'
         ? signInWithEmailAndPassword
         : createUserWithEmailAndPassword;
-    debugger;
     proc(firebaseAuth, email, password)
       .then((userCredential) => {
         console.log('Auth success.');
