@@ -1,6 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
+// This account is under free plan.
+// I recommend you to create your own account for learning.
 export const firebaseApp = initializeApp({
   apiKey: 'AIzaSyCnKWVx4RhE0eC9aIIKZIk0AAe63tLngVI',
   authDomain: 'altech-todoist.firebaseapp.com',
