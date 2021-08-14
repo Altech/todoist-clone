@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth.uid == userId;
+
+      match /tasks/{taskID} {
+        allow read, delete: if request.auth.uid == userId
+        allow create, update: if request.auth.uid == userId && request.resource.data.userId == userId;
+      }
+
+      match /projects/{projectID} {
+        allow read, delete: if request.auth.uid == userId
+        allow create, update: if request.auth.uid == userId && request.resource.data.userId == userId;
+
+        match /tasks/{taskID} {
+          allow read, delete: if request.auth.uid == userId
+          allow create, update: if request.auth.uid == userId && request.resource.data.userId == userId;
+        }
+      }
+    }
+
+   // For collection group
+    match /{path=**}/tasks/{taskId} {
+      allow read: if request.auth.uid == resource.data.userId;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
