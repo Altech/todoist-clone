@@ -1,8 +1,8 @@
 # Todoist clone
 
-React、TypeScript、Firebase を使って作った、人気のタスク管理アプリである Todoist のクローンです。
+A clone of [Todoist](https://todoist.com/), a popular task management app built using React, TypeScript, and Firebase.
 
-![](./public/screenshot.png)
+![](./public/screenshot)
 
 https://altech-todoist.web.app/
 
@@ -36,11 +36,11 @@ https://altech-todoist.web.app/
 
 ## Setup
 
-Firebase のクレデンシャルは既にリポジトリに含まれているので、ローカルで動かすための最小のセットアップ手順は以下になります。
+Since Firebase credentials are already included in the repository, the minimal setup procedure to run it locally is as follows.
 
 ```
 $ yarn
 $ yarn start
 ```
 
-バックエンドも差し替えるためには、アカウントを作って `src/firebaase.ts` を変更してください。
+To replace firebase backend as well, create an account and change `src/firebaase.ts`.
