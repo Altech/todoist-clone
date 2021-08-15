@@ -1,25 +1,46 @@
-# New Project
+# Todoist clone
 
-> ✨ Bootstrapped with Create Snowpack App (CSA).
+React、TypeScript、Firebase を使って作った、人気のタスク管理アプリである Todoist のクローンです。
 
-## Available Scripts
+![](./public/screenshot.png)
 
-### npm start
+https://altech-todoist.web.app/
 
-Runs the app in the development mode.
-Open http://localhost:8080 to view it in the browser.
+## Technologies
 
-The page will reload if you make edits.
-You will also see any lint errors in the console.
+- Language: TypeScript
+- UI Library: React 17
+- Backend: Firebase (Cloud Firestore, Authentication, Hosting)
+- Firebase SDK: [v9 - modular version](https://firebase.google.com/docs/web/learn-more#modular-version)
+- Module Bundler: Snowpack
+- CSS: styled-components
 
-### npm run build
+## Spec
 
-Builds a static copy of your site to the `build/` folder.
-Your app is ready to be deployed!
+### Features
 
-**For the best production performance:** Add a build bundler plugin like "@snowpack/plugin-webpack" to your `snowpack.config.mjs` config file.
+- Sign Up
+- Sign In
+- Sign Out
+- List tasks
+- Add a task to inbox
+- Edit a task
+- Delete a task
+- Mark task as done
+- Schedule a task
+- List projects
+- Add a project
+- Add a task to a project
+- List tasks of a project
+- Filter all tasks by schedule
 
-### npm test
+## Setup
 
-Launches the application test runner.
-Run with the `--watch` flag (`npm test -- --watch`) to run in interactive watch mode.
+Firebase のクレデンシャルは既にリポジトリに含まれているので、ローカルで動かすための最小のセットアップ手順は以下になります。
+
+```
+$ yarn
+$ yarn start
+```
+
+バックエンドも差し替えるためには、アカウントを作って `src/firebaase.ts` を変更してください。
