@@ -2,7 +2,7 @@
 
 A clone of [Todoist](https://todoist.com/), a popular task management app built using React, TypeScript, and Firebase.
 
-![](./public/screenshot)
+![](./public/screenshot.png)
 
 https://altech-todoist.web.app/
 
